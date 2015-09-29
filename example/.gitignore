@@ -1,0 +1,4 @@
+coverage
+npm-debug.log
+.tern-port
+.DS_Store
