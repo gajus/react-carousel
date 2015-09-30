@@ -53,7 +53,13 @@ class Root extends React.Component {
                    >{num}</span>;
         });
 
-        return <div ref="wrapper">
+        return <div
+                   ref="wrapper"
+               style={{
+                      height: 100,
+                      minWidth: 1200,
+                      maxWidth: 1500
+                      }}>
             <Carousel
                 onItemActivate={this.activateItem.bind(this)}
                 onItemsScroll={this.scrollToIndex.bind(this)}
