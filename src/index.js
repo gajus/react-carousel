@@ -28,7 +28,7 @@ class Carousel extends Component {
         itemMargin: PropTypes.number,
         controlButtonWidth: PropTypes.number,
         onItemActivate: PropTypes.func,
-        onItemsScroll: PropTypes.func,
+        onItemsScroll: PropTypes.func
     }
 
     static defaultProps = {
@@ -80,9 +80,9 @@ class Carousel extends Component {
     getMeasurements ({maxWidth, controlButtonWidth, totalItems, displayWindowSize, itemMargin, visibleIndex}) {
         let cellWidth,
             listPosition,
-            prevButtonActive,
-            nextButtonActive,
             listWidth,
+            nextButtonActive,
+            prevButtonActive,
             visibleCellIdeces;
 
         cellWidth = (maxWidth - (controlButtonWidth + itemMargin) * 2) / displayWindowSize;
@@ -115,15 +115,15 @@ class Carousel extends Component {
 
     render () {
         let activeItemId,
-            items,
-            itemMargin,
-            displayWindowSize,
-            maxWidth,
-            getItem,
             controlButtonWidth,
-            totalItems,
+            displayWindowSize,
+            getItem,
+            itemMargin,
+            items,
+            maxWidth,
             scrollStepDistance,
             scrollTo,
+            totalItems,
             visibleIndex;
 
         maxWidth = this.state.maxWidth;
@@ -136,6 +136,7 @@ class Carousel extends Component {
         itemMargin = this.props.itemMargin;
         totalItems = items.length;
 
+        /* eslint-disable one-var,lines-around-comment */
         let {
             cellWidth,
             listPosition,
@@ -151,6 +152,7 @@ class Carousel extends Component {
             itemMargin,
             visibleIndex
         });
+        /* eslint-enable */
 
         scrollTo = (direction) => {
             let index;
@@ -164,16 +166,14 @@ class Carousel extends Component {
             });
 
             this.props.onItemsScroll(index);
-        }
+        };
 
         getItem = (item, index) => {
             let isVisible,
-                isLast,
-                width,
-                positionLeft;
+                positionLeft,
+                width;
 
             isVisible = _.contains(visibleCellIdeces, index);
-            isLast = isVisible && (index + 1 % displayWindowSize === 0);
             width = cellWidth - itemMargin;
             positionLeft = index * cellWidth + itemMargin;
 
@@ -181,7 +181,7 @@ class Carousel extends Component {
                        styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
                        key={item.key}
                        onClick={() => this.props.onItemActivate(item.key)}
-                       style= {{ left: `${positionLeft}px`,
+                       style= {{left: `${positionLeft}px`,
                           width: `${width}px`,
                           opacity: `${isVisible ? 1 : 0}`,
                           visibility: `${isVisible ? 'visible' : 'hidden'}`,
@@ -189,7 +189,7 @@ class Carousel extends Component {
                         }}>
                         <span>{item}</span>
             </li>;
-        }
+        };
 
         return <div styleName="wrapper" ref="wrapper">
                 <span styleName={`control-cell-previous${prevButtonActive ? '' : '-inactive'}`}
