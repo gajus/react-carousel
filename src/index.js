@@ -8,15 +8,12 @@ import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
 import styles from './carousel.scss';
-import state from './state';
-import actions from './actions';
-import reducers from './reducers';
 
 class Carousel extends Component {
     constructor (props) {
         super(props);
 
-        this.maxWidth = null;
+        this.state = {maxWidth: null}
     }
 
     static propTypes = {
@@ -33,7 +30,7 @@ class Carousel extends Component {
     }
 
     componentDidMount () {
-        this.maxWidth = ReactDOM.findDOMNode(this.refs.wrapper).offsetWidth;
+        this.setState({maxWidth: ReactDOM.findDOMNode(this.refs.wrapper).offsetWidth});
     }
 
     /**
@@ -92,7 +89,7 @@ class Carousel extends Component {
             visibleCells,
             visibleIndex;
 
-        maxWidth = this.maxWidth;
+        maxWidth = this.state.maxWidth;
         navButtonWidth = 30;
         items = this.props.items;
         activeItemId = this.props.activeItemId;
@@ -144,8 +141,8 @@ class Carousel extends Component {
                     {items.map((item, index) =>
                         <li
                         styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
-                        key={index}
-                        onClick={() => this.props.onItemActivate(item)}
+                        key={item.key}
+                        onClick={() => this.props.onItemActivate(item.key)}
                         style={{left: `${index * cellWidth}px`,
                                 width: `${cellWidth - 1}px`,
                                 opacity: `${_.contains(visibleCells, index) ? 1 : 0}`,
@@ -173,9 +170,3 @@ class Carousel extends Component {
 }
 
 export default CSSModules(styles)(Carousel);
-
-export {
-    state,
-    actions,
-    reducers
-};

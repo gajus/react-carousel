@@ -8,48 +8,65 @@ import {
 import Carousel, {
     actions
 } from '@applaudience/react-carousel';
-import store from './store.js';
 
 let App,
     selector;
 
 selector = (immutableState) => {
     return {
-        carousel: immutableState.get('carousel').toJS()
+
     };
 };
 
 class Root extends React.Component {
-    render () {
-        let items;
-        let {
-            dispatch,
-            carousel
-        } = this.props;
+    constructor (props) {
+        super(props);
 
-        items = _.map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (num) => {
+        this.state = {
+            visibleIndex: 0,
+            activeItemId: '0'
+        };
+    }
+
+    scrollToIndex (index) {
+        this.setState({visibleIndex: index});
+    }
+
+    activateItem (id) {
+        this.setState({activeItemId: id});
+    }
+
+    render () {
+        let items,
+            carousel;
+
+        carousel = this.state;
+
+        items = _.map([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (num) => {
             return <span
                        style={{marginTop: '20px',
                                fontSize: '32px',
                                display: 'block',
                                width: '100%',
                                textAlign: 'center'}}
-                       key={num}
+                       key={'' + num}
                    >{num}</span>;
         });
 
-        return <Carousel
-                   onItemActivate={(item) => { dispatch(actions.activateItem(item)); }}
-                   onItemsScroll={(index) => { dispatch(actions.scrollToIndex(index)); }}
-                   items={items}
-                   {...carousel}
-               />
+        return <div ref="wrapper">
+            <Carousel
+                onItemActivate={this.activateItem.bind(this)}
+                onItemsScroll={this.scrollToIndex.bind(this)}
+                items={items}
+                visibleIndex={carousel.visibleIndex}
+                activeItemId={carousel.activeItemId}
+            />
+        </div>;
     }
 }
 
-App = connect(selector)(Root);
+App = Root;
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>, document.getElementById('app'));
+    <App />
+    , document.getElementById('app'));
