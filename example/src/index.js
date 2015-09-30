@@ -42,7 +42,7 @@ class Root extends React.Component {
 
         carousel = this.state;
 
-        items = _.map([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (num) => {
+        items = _.map(_.times(10, (n) => n), (num) => {
             return <span
                        style={{marginTop: '20px',
                                fontSize: '32px',
@@ -55,18 +55,18 @@ class Root extends React.Component {
 
         return <div
                    ref="wrapper"
-               style={{
-                      height: 100,
-                      minWidth: 1200,
-                      maxWidth: 1500
-                      }}>
-            <Carousel
-                onItemActivate={this.activateItem.bind(this)}
-                onItemsScroll={this.scrollToIndex.bind(this)}
-                items={items}
-                visibleIndex={carousel.visibleIndex}
-                activeItemId={carousel.activeItemId}
-            />
+                   style={{
+                          height: 150,
+                          maxWidth: 1500,
+                          background: '#29A9D8'
+                          }}>
+             <Carousel
+                 onItemActivate={this.activateItem.bind(this)}
+                 onItemsScroll={this.scrollToIndex.bind(this)}
+                 items={items}
+                 visibleIndex={carousel.visibleIndex}
+                 activeItemId={carousel.activeItemId}
+             />
         </div>;
     }
 }

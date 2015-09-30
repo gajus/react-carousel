@@ -52,7 +52,7 @@
 
     width: 60px;
     height: 100%;
-    margin: 0 1px;
+    margin: 0;
     padding: 0;
 
     cursor: pointer;
@@ -106,26 +106,7 @@
     text-transform: uppercase;
 }
 
-.day {
-    composes: cell-content;
-    font-size: 18px;
-
-    margin-top: 5px;
-}
-
-.date {
-    composes: cell-content;
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.month {
-    composes: cell-content;
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.nav-cell {
+.control-cell {
     composes: cell clearfix;
 
     position: relative;
@@ -137,39 +118,37 @@
     color: #29a9d8;
 }
 
-.nav-cell-next {
-    composes: nav-cell;
+.control-cell-next {
+    composes: control-cell;
 
     position: absolute;
     top: 0;
     right: 0;
 
     float: right;
-
-    margin-right: 0;
 }
 
-.nav-cell-previous {
-    composes: nav-cell;
+.control-cell-previous {
+    composes: control-cell;
 
     z-index: 2;
 
     margin-left: 0;
 }
 
-.nav-cell-inactive {
+.control-cell-inactive {
     display: none;
 }
 
-.nav-cell-previous-inactive {
-    composes: nav-cell-inactive nav-cell-previous;
+.control-cell-previous-inactive {
+    composes: control-cell-inactive control-cell-previous;
 }
 
-.nav-cell-next-inactive {
-    composes: nav-cell-inactive nav-cell-next;
+.control-cell-next-inactive {
+    composes: control-cell-inactive control-cell-next;
 }
 
-.nav-icon {
+.control-icon {
     font-size: 20px;
 
     position: absolute;
@@ -178,8 +157,8 @@
     left: 30%;
 }
 
-.nav-icon-next {
-    composes: nav-icon;
+.control-icon-next {
+    composes: control-icon;
 
     z-index: 2;
 
@@ -190,8 +169,8 @@
     }
 }
 
-.nav-icon-previous {
-    composes: nav-icon;
+.control-icon-previous {
+    composes: control-icon;
 
     left: 15%;
 

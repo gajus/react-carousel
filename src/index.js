@@ -13,24 +13,39 @@ class Carousel extends Component {
     constructor (props) {
         super(props);
 
-        this.state = {maxWidth: null}
+        this.state = {maxWidth: null};
+        this.resizeEventListener = _.debounce(() => {
+            this.setState({maxWidth: ReactDOM.findDOMNode(this.refs.wrapper).offsetWidth});
+        }, 100);
     }
 
     static propTypes = {
         activeItemId: PropTypes.string,
+        items: PropTypes.arrayOf(PropTypes.object).isRequired,
         visibleIndex: PropTypes.number,
+        displayWindowSize: PropTypes.number,
+        scrollStepDistance: PropTypes.number,
+        itemMargin: PropTypes.number,
+        controlButtonWidth: PropTypes.number,
         onItemActivate: PropTypes.func,
         onItemsScroll: PropTypes.func,
-        items: PropTypes.arrayOf(PropTypes.object).isRequired
     }
 
     static defaultProps = {
         visibleIndex: 0,
-        onItemActivate: () => {}
-    }
+        displayWindowSize: 5,
+        scrollStepDistance: 3,
+        controlButtonWidth: 30,
+        itemMargin: 1
+    };
 
     componentDidMount () {
         this.setState({maxWidth: ReactDOM.findDOMNode(this.refs.wrapper).offsetWidth});
+        window.addEventListener('resize', this.resizeEventListener);
+    }
+
+    componentWillUnmount () {
+        window.removeEventListener('resize', this.resizeEventListener);
     }
 
     /**
@@ -62,109 +77,138 @@ class Carousel extends Component {
         return index;
     }
 
-    /**
-     * Handle the clicks on nav buttons. Just a wrapper so we won't have to write too long string in jsx
-     * @param {Arguments} args Arguments passed as is to this.getIndexToScrollTo
-     * @returns {undefined}
-     */
-    handleItemsScroll (options) {
-        let index;
+    getMeasurements ({maxWidth, controlButtonWidth, totalItems, displayWindowSize, itemMargin, visibleIndex}) {
+        let cellWidth,
+            listPosition,
+            prevButtonActive,
+            nextButtonActive,
+            listWidth,
+            visibleCellIdeces;
 
-        index = this.getIndexToScrollTo(options);
-        this.props.onItemsScroll(index);
+        cellWidth = (maxWidth - (controlButtonWidth + itemMargin) * 2) / displayWindowSize;
+        listPosition = -(cellWidth * visibleIndex);
+
+        prevButtonActive = visibleIndex !== 0;
+        nextButtonActive = visibleIndex < totalItems - displayWindowSize;
+
+        if (!nextButtonActive) {
+            cellWidth += controlButtonWidth / displayWindowSize;
+            listPosition = -(cellWidth * visibleIndex);
+        }
+        if (!prevButtonActive) {
+            cellWidth += controlButtonWidth / displayWindowSize;
+            listPosition = -(cellWidth * visibleIndex) - controlButtonWidth;
+        }
+
+        listWidth = cellWidth * displayWindowSize;
+        visibleCellIdeces = _.times(displayWindowSize, (num) => visibleIndex + num);
+
+        return {
+            cellWidth,
+            listPosition,
+            prevButtonActive,
+            nextButtonActive,
+            listWidth,
+            visibleCellIdeces
+        };
     }
 
     render () {
         let activeItemId,
-            cellWidth,
             items,
+            itemMargin,
             displayWindowSize,
-            listPosition,
-            listWidth,
             maxWidth,
-            navButtonWidth,
-            nextButtonActive,
-            prevButtonActive,
+            getItem,
+            controlButtonWidth,
+            totalItems,
             scrollStepDistance,
-            visibleCells,
+            scrollTo,
             visibleIndex;
 
         maxWidth = this.state.maxWidth;
-        navButtonWidth = 30;
         items = this.props.items;
+        controlButtonWidth = this.props.controlButtonWidth;
         activeItemId = this.props.activeItemId;
-        // actual width + padding. To make this configurable, move the width+padding of cells from css and put them inline using this variable
-        cellWidth = 80 + 1;
         visibleIndex = this.props.visibleIndex;
-        displayWindowSize = 5;
-        scrollStepDistance = 3;
+        displayWindowSize = this.props.displayWindowSize;
+        scrollStepDistance = this.props.scrollStepDistance;
+        itemMargin = this.props.itemMargin;
+        totalItems = items.length;
 
-        if (maxWidth) {
-            cellWidth = (maxWidth - (navButtonWidth + 1) * 2) / displayWindowSize;
-        } else {
-            maxWidth = cellWidth * displayWindowSize + navButtonWidth * 2 + 1;
+        let {
+            cellWidth,
+            listPosition,
+            prevButtonActive,
+            nextButtonActive,
+            listWidth,
+            visibleCellIdeces
+        } = this.getMeasurements({
+            maxWidth,
+            controlButtonWidth,
+            totalItems,
+            displayWindowSize,
+            itemMargin,
+            visibleIndex
+        });
+
+        scrollTo = (direction) => {
+            let index;
+
+            index = this.getIndexToScrollTo({
+                direction,
+                totalItems,
+                visibleIndex,
+                displayWindowSize,
+                scrollStepDistance
+            });
+
+            this.props.onItemsScroll(index);
         }
 
-        listPosition = -(cellWidth * visibleIndex);
-        prevButtonActive = visibleIndex !== 0;
-        nextButtonActive = visibleIndex < items.length - displayWindowSize;
+        getItem = (item, index) => {
+            let isVisible,
+                isLast,
+                width,
+                positionLeft;
 
-        if (!nextButtonActive) {
-            cellWidth += navButtonWidth / displayWindowSize;
-            listPosition = -(cellWidth * visibleIndex);
-        }
-        if (!prevButtonActive) {
-            cellWidth += navButtonWidth / displayWindowSize;
-            listPosition = -(cellWidth * visibleIndex) - navButtonWidth;
-        }
+            isVisible = _.contains(visibleCellIdeces, index);
+            isLast = isVisible && (index + 1 % displayWindowSize === 0);
+            width = cellWidth - itemMargin;
+            positionLeft = index * cellWidth + itemMargin;
 
-        listWidth = cellWidth * displayWindowSize;
-        visibleCells = _.times(displayWindowSize, (num) => visibleIndex + num);
+            return <li
+                       styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
+                       key={item.key}
+                       onClick={() => this.props.onItemActivate(item.key)}
+                       style= {{ left: `${positionLeft}px`,
+                          width: `${width}px`,
+                          opacity: `${isVisible ? 1 : 0}`,
+                          visibility: `${isVisible ? 'visible' : 'hidden'}`,
+                          transitionDelay: '0s'
+                        }}>
+                        <span>{item}</span>
+            </li>;
+        }
 
         return <div styleName="wrapper" ref="wrapper">
-            <span styleName={`nav-cell-previous${prevButtonActive ? '' : '-inactive'}`}
-                  onClick={() => this.handleItemsScroll({
-                           totalItems: items.length,
-                           direction: 'previous',
-                           visibleIndex,
-                           displayWindowSize,
-                           scrollStepDistance
-                           })}>
-                <span styleName="nav-icon-previous"></span>
-            </span>
+                <span styleName={`control-cell-previous${prevButtonActive ? '' : '-inactive'}`}
+                      onClick={() => scrollTo('previous')}>
+                    <span styleName="control-icon-previous"></span>
+                </span>
 
-            <div styleName='visible-window'>
-                <ul styleName='items-list'
-                    style={{left: `${listPosition}px`,
-                            maxWidth: `${listWidth}px`}}>
+                <div styleName='visible-window'>
+                    <ul styleName='items-list'
+                        style={{left: `${listPosition}px`,
+                                maxWidth: `${listWidth}px`}}>
+                        {items.map(getItem)}
+                    </ul>
+                </div>
 
-                    {items.map((item, index) =>
-                        <li
-                        styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
-                        key={item.key}
-                        onClick={() => this.props.onItemActivate(item.key)}
-                        style={{left: `${index * cellWidth}px`,
-                                width: `${cellWidth - 1}px`,
-                                opacity: `${_.contains(visibleCells, index) ? 1 : 0}`,
-                                visibility: `${_.contains(visibleCells, index) ? 'visible' : 'hidden'}`,
-                                transitionDelay: '0s'}}>
-
-                        <span>{item}</span>
-                        </li>
-                     )}
-                </ul>
-            </div>
-
-            <span styleName={`nav-cell-next${nextButtonActive ? '' : '-inactive'}`}
-                  onClick={() => this.handleItemsScroll({
-                           totalItems: items.length,
-                           direction: 'next',
-                           visibleIndex,
-                           displayWindowSize,
-                           scrollStepDistance
-                           })}>
-                <span styleName="nav-icon-next"></span>
-            </span>
+                <span styleName={`control-cell-next${nextButtonActive ? '' : '-inactive'}`}
+                      onClick={() => scrollTo('next')}>
+                    <span styleName="control-icon-next"></span>
+                </span>
         </div>;
     }
 }
