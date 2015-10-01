@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "start": "node ./node_modules/.bin/webpack-dev-server",
+    "dev": "NODE_ENV='DEV' npm start"
   },
   "devDependencies": {
     "babel": "^5.8.23",

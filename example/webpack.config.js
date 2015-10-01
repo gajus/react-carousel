@@ -1,7 +1,17 @@
 var webpack = require('webpack'),
     path = require('path'),
+    _ = require('lodash'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    devServer;
+    devServer,
+    getDevAliases;
+
+getDevAliases = () => {
+    if (process.env.NODE_ENV === 'DEV') {
+        return {
+            '@applaudience/react-carousel': path.resolve(__dirname, '../src')
+        };
+    }
+};
 
 devServer = {
     contentBase: __dirname + '/src/endpoint',
@@ -76,9 +86,9 @@ module.exports = {
             '',
             '.js'
         ],
-        alias: {
+        alias: _.extend({
             react: path.resolve(__dirname, './node_modules/react')
-        },
+        }, getDevAliases()),
         modulesDirectories: [
             'node_modules'
         ]
