@@ -23,19 +23,19 @@ class Carousel extends Component {
         activeItemId: PropTypes.string,
         items: PropTypes.arrayOf(PropTypes.object).isRequired,
         visibleIndex: PropTypes.number,
-        displayWindowSize: PropTypes.number,
+        itemWidth: PropTypes.number,
         scrollStepDistance: PropTypes.number,
         itemMargin: PropTypes.number,
-        controlButtonWidth: PropTypes.number,
+        controlWidth: PropTypes.number,
         onItemActivate: PropTypes.func,
         onItemsScroll: PropTypes.func
     }
 
     static defaultProps = {
         visibleIndex: 0,
-        displayWindowSize: 5,
+        itemWidth: 50,
         scrollStepDistance: 3,
-        controlButtonWidth: 30,
+        controlWidth: 30,
         itemMargin: 1
     };
 
@@ -55,17 +55,17 @@ class Carousel extends Component {
      * @property {Number} options.totalItems Total number of items being displayed
      * @property {Number} options.currentVisibleIndex Index of item in front
      * @property {String} options.direction next|previous Direction in which to scroll
-     * @property {Number} options.displayWindowSize Number of items displayed at one time in component
+     * @property {Number} options.visibleItemsCount Number of items displayed at one time in component
      * @property {Number} options.stepDistance Number of items to scroll in one step
      *
      * @returns {Number} Index of item to which to scroll
      */
-    getIndexToScrollTo ({totalItems, visibleIndex, direction, displayWindowSize, scrollStepDistance}) {
+    getIndexToScrollTo ({totalItems, visibleIndex, direction, visibleItemsCount, scrollStepDistance}) {
         let index,
             itemsBehindVisible,
             itemsBeyondVisible;
 
-        itemsBeyondVisible = totalItems - visibleIndex - displayWindowSize;
+        itemsBeyondVisible = totalItems - visibleIndex - visibleItemsCount;
         itemsBehindVisible = visibleIndex;
 
         if (direction === 'next') {
@@ -74,51 +74,61 @@ class Carousel extends Component {
             index = visibleIndex - (itemsBehindVisible > scrollStepDistance ? scrollStepDistance : itemsBehindVisible);
         }
 
+        console.log('New Scroll Position', index);
         return index;
     }
 
-    getMeasurements ({maxWidth, controlButtonWidth, totalItems, displayWindowSize, itemMargin, visibleIndex}) {
-        let cellWidth,
-            listPosition,
-            listWidth,
-            nextButtonActive,
-            prevButtonActive,
-            visibleCellIdeces;
+    /**
+     * Get the number of visible items which can be shown at a time
+     *
+     * @param {number} availableWidth Total available width in which items are to be shown
+     * @param {number} itemWidth Width of each individual item to be inserted
+     * @param {number} itemMargin Margin between two items
+     * @returns {}
+     */
+    getVisibleItemsCount (availableWidth, itemWidth, itemMargin) {
+        return Math.floor(availableWidth / (itemWidth + itemMargin) - itemMargin);
+    }
 
-        cellWidth = (maxWidth - (controlButtonWidth + itemMargin) * 2) / displayWindowSize;
-        listPosition = -(cellWidth * visibleIndex);
+    getMeasurements ({visibleIndex, maxWidth, totalItems, itemWidth, controlWidth, itemMargin}) {
+        let availableWidth,
+            nextButtonVisible,
+            prevButtonVisible,
+            visibleItemIndeces,
+            visibleItemsCount;
 
-        prevButtonActive = visibleIndex !== 0;
-        nextButtonActive = visibleIndex < totalItems - displayWindowSize;
+        availableWidth = maxWidth;
+        prevButtonVisible = visibleIndex > 0;
 
-        if (!nextButtonActive) {
-            cellWidth += controlButtonWidth / displayWindowSize;
-            listPosition = -(cellWidth * visibleIndex);
+        if (prevButtonVisible) {
+            availableWidth -= controlWidth + itemMargin;
         }
-        if (!prevButtonActive) {
-            cellWidth += controlButtonWidth / displayWindowSize;
-            listPosition = -(cellWidth * visibleIndex) - controlButtonWidth;
+
+        visibleItemsCount = this.getVisibleItemsCount(availableWidth, itemWidth, itemMargin);
+
+        nextButtonVisible = visibleIndex < totalItems - visibleItemsCount;
+
+        if (nextButtonVisible) {
+            availableWidth -= controlWidth + itemMargin;
+            visibleItemsCount = this.getVisibleItemsCount(availableWidth, itemWidth, itemMargin);
         }
 
-        listWidth = cellWidth * displayWindowSize;
-        visibleCellIdeces = _.times(displayWindowSize, (num) => visibleIndex + num);
+        visibleItemIndeces = _.range(visibleIndex, visibleItemsCount + visibleIndex);
 
         return {
-            cellWidth,
-            listPosition,
-            prevButtonActive,
-            nextButtonActive,
-            listWidth,
-            visibleCellIdeces
+            nextButtonVisible,
+            prevButtonVisible,
+            visibleItemsCount,
+            visibleItemIndeces
         };
     }
 
     render () {
         let activeItemId,
-            controlButtonWidth,
-            displayWindowSize,
-            getItem,
+            controlWidth,
+            getItemJsx,
             itemMargin,
+            itemWidth,
             items,
             maxWidth,
             scrollStepDistance,
@@ -128,29 +138,27 @@ class Carousel extends Component {
 
         maxWidth = this.state.maxWidth;
         items = this.props.items;
-        controlButtonWidth = this.props.controlButtonWidth;
+        controlWidth = this.props.controlWidth;
         activeItemId = this.props.activeItemId;
         visibleIndex = this.props.visibleIndex;
-        displayWindowSize = this.props.displayWindowSize;
+        itemWidth = this.props.itemWidth;
         scrollStepDistance = this.props.scrollStepDistance;
         itemMargin = this.props.itemMargin;
         totalItems = items.length;
 
         /* eslint-disable one-var,lines-around-comment */
         let {
-            cellWidth,
-            listPosition,
-            prevButtonActive,
-            nextButtonActive,
-            listWidth,
-            visibleCellIdeces
+            nextButtonVisible,
+            prevButtonVisible,
+            visibleItemsCount,
+            visibleItemIndeces
         } = this.getMeasurements({
+            visibleIndex,
             maxWidth,
-            controlButtonWidth,
             totalItems,
-            displayWindowSize,
-            itemMargin,
-            visibleIndex
+            itemWidth,
+            controlWidth,
+            itemMargin
         });
         /* eslint-enable */
 
@@ -161,55 +169,57 @@ class Carousel extends Component {
                 direction,
                 totalItems,
                 visibleIndex,
-                displayWindowSize,
+                visibleItemsCount,
                 scrollStepDistance
             });
 
             this.props.onItemsScroll(index);
         };
 
-        getItem = (item, index) => {
-            let isVisible,
-                positionLeft,
-                width;
+        getItemJsx = (item, index) => {
+            let isVisible;
 
-            isVisible = _.contains(visibleCellIdeces, index);
-            width = cellWidth - itemMargin;
-            positionLeft = index * cellWidth + itemMargin;
+            isVisible = _.contains(visibleItemIndeces, index);
 
             return <li
-                       styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
-                       key={item.key}
-                       onClick={() => this.props.onItemActivate(item.key)}
-                       style= {{left: `${positionLeft}px`,
-                          width: `${width}px`,
-                          opacity: `${isVisible ? 1 : 0}`,
-                          visibility: `${isVisible ? 'visible' : 'hidden'}`,
-                          transitionDelay: '0s'
-                        }}>
-                        <span>{item}</span>
-            </li>;
+            styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
+            style={{
+                width: itemWidth,
+                marginRight: itemMargin,
+                display: isVisible ? 'list-item' : 'none'
+            }}
+            key={item.key}
+            onClick={() => this.props.onItemActivate(item.key)}>
+                <span>{item}</span>
+                </li>;
         };
 
         return <div styleName="wrapper" ref="wrapper">
-                <span styleName={`control-cell-previous${prevButtonActive ? '' : '-inactive'}`}
-                      onClick={() => scrollTo('previous')}>
-                    <span styleName="control-icon-previous"></span>
-                </span>
+            <ul styleName='carousel'>
 
-                <div styleName='visible-window'>
-                    <ul styleName='items-list'
-                        style={{left: `${listPosition}px`,
-                                maxWidth: `${listWidth}px`}}>
-                        {items.map(getItem)}
-                    </ul>
-                </div>
+            <li styleName="control-cell-previous"
+        style={{
+            width: controlWidth,
+            marginRight: itemMargin,
+            display: prevButtonVisible ? 'list-item' : 'none'
+        }}
+        onClick={() => scrollTo('previous')}>
+            <span styleName="control-icon-previous"></span>
+            </li>
 
-                <span styleName={`control-cell-next${nextButtonActive ? '' : '-inactive'}`}
-                      onClick={() => scrollTo('next')}>
-                    <span styleName="control-icon-next"></span>
-                </span>
-        </div>;
+            {items.map(getItemJsx)}
+
+            <li styleName="control-cell-next"
+        style={{
+            width: controlWidth,
+            display: nextButtonVisible ? 'list-item' : 'none'
+        }}
+        onClick={() => scrollTo('next')} >
+            <span styleName="control-icon-next"></span>
+            </li>
+
+            </ul>
+            </div>;
     }
 }
 

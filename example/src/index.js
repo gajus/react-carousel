@@ -83,21 +83,6 @@ class Root extends React.Component {
         });
     }
 
-    setDisplayWindowSize (event) {
-        let size;
-
-        size = parseInt(event.target.value) || this.state.displayWindowSize;
-
-        if (size < 0) {
-            size = 5;
-        }
-
-        this.setState({
-            displayWindowSize: size,
-            visibleIndex: 0
-        })
-    }
-
     render () {
         let items;
 
@@ -116,18 +101,17 @@ class Root extends React.Component {
                    ref="wrapper"
                    style={{
                           height: 150,
-                          maxWidth: 1500,
-                          background: '#29A9D8'
+                          background: '#99A9D8',
+                          maxWidth: 550
                           }}>
              <Carousel
-                 onItemActivate={this.activateItem.bind(this)}
-                 onItemsScroll={this.scrollToIndex.bind(this)}
                  items={items}
                  visibleIndex={this.state.visibleIndex}
                  activeItemId={this.state.activeItemId}
                  scrollStepDistance={this.state.scrollStepDistance}
-                 displayWindowSize={this.state.displayWindowSize}
-
+                 onItemActivate={this.activateItem.bind(this)}
+                 onItemsScroll={this.scrollToIndex.bind(this)}
+                 itemWidth={90}
              />
 
              <div className="controls">
@@ -160,16 +144,6 @@ class Root extends React.Component {
                                  ref="scrollStepDistance"
                                  onChange={this.setScrollStepDistance.bind(this)}
                                  defaultValue={this.state.scrollStepDistance}
-                             /></td>
-                     </tr>
-                     <tr>
-                         <td>displayWindowSize</td>
-                         <td>
-                             <input
-                                 type="number"
-                                 ref="scrollStepDistance"
-                                 onChange={this.setDisplayWindowSize.bind(this)}
-                                 defaultValue={this.state.displayWindowSize}
                              /></td>
                      </tr>
                      </tbody>
