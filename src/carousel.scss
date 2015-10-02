@@ -96,17 +96,6 @@
     composes: cell-not-visible;
 }
 
-.cell-content {
-    font-weight: 500;
-
-    float: left;
-
-    width: 100%;
-
-    text-align: center;
-    text-transform: uppercase;
-}
-
 .control-cell {
     composes: cell clearfix;
 

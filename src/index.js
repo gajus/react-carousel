@@ -213,4 +213,4 @@ class Carousel extends Component {
     }
 }
 
-export default CSSModules(styles)(Carousel);
+export default CSSModules(Carousel, styles);

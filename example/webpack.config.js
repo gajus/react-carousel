@@ -1,20 +1,30 @@
-var webpack = require('webpack'),
-    path = require('path'),
-    _ = require('lodash'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    devServer,
-    getDevAliases;
+/* eslint-disable no-process-env, id-match */
 
-getDevAliases = () => {
-    if (process.env.NODE_ENV === 'DEV') {
-        return {
-            '@applaudience/react-carousel': path.resolve(__dirname, '../src')
-        };
-    }
-};
+let ExtractTextPlugin,
+    alias,
+    devServer,
+    path,
+    srcDirs,
+    webpack;
+
+webpack = require('webpack');
+path = require('path');
+ExtractTextPlugin = require('extract-text-webpack-plugin');
+srcDirs = [path.resolve(__dirname, 'src')];
+
+if (process.env.NODE_ENV === 'DEV') {
+    alias = {
+        react: path.resolve(__dirname, './node_modules/react'),
+        '@applaudience/react-carousel': path.resolve(__dirname, '../src')
+    };
+
+    srcDirs = srcDirs.concat([
+        path.resolve(__dirname, '../src')
+    ]);
+}
 
 devServer = {
-    contentBase: __dirname + '/src/endpoint',
+    contentBase: path.join(__dirname, '/src/endpoint'),
     colors: true,
     quiet: false,
     noInfo: false,
@@ -28,16 +38,17 @@ devServer = {
 module.exports = {
     devtool: 'eval-source-map',
     debug: true,
-    devServer: devServer,
+    devServer,
     context: __dirname,
     entry: {
         app: [
-            'webpack/hot/dev-server',
+            `webpack-dev-server/client?http://${devServer.host}:${devServer.port}`,
+            'webpack/hot/only-dev-server',
             './src/'
         ]
     },
     output: {
-        path: __dirname + '/dist',
+        path: path.join(__dirname, '/dist'),
         filename: '[name].js',
         publicPath: devServer.publicPath
     },
@@ -55,13 +66,12 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                include: path.resolve(__dirname, 'src'),
+                include: srcDirs,
                 loader: 'react-hot'
             },
             {
                 test: /\.js$/,
-                // include: path.resolve(__dirname, 'src'),
-                exclude: /node_modules/,
+                include: srcDirs,
                 loader: 'babel'
             },
             {
@@ -71,26 +81,10 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass')
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loaders: [
-                    'file?hash=sha512&digest=hex&name=[hash].[ext]',
-                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-                ]
             }
         ]
     },
     resolve: {
-        extensions: [
-            '',
-            '.js'
-        ],
-        alias: _.extend({
-            react: path.resolve(__dirname, './node_modules/react')
-        }, getDevAliases()),
-        modulesDirectories: [
-            'node_modules'
-        ]
+        alias
     }
 };
