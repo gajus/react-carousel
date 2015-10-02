@@ -17,7 +17,7 @@
     "webpack-dev-server": "^1.12.0"
   },
   "dependencies": {
-    "@applaudience/react-carousel": "^0.1.1",
+    "@applaudience/react-carousel": "^0.2.0",
     "react": "0.14.0-rc1",
     "react-css-modules": "^3.2.3",
     "react-dom": "^0.14.0-rc1"
