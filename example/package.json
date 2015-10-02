@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node ./node_modules/.bin/babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "node ./node_modules/.bin/webpack-dev-server",
+    "build": "NODE_ENV='DEV' node ./node_modules/.bin/webpack -p",
     "dev": "NODE_ENV='DEV' npm start"
   },
   "devDependencies": {

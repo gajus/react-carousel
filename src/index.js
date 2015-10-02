@@ -22,7 +22,7 @@ class Carousel extends Component {
     static propTypes = {
         activeItemId: PropTypes.string,
         items: PropTypes.arrayOf(PropTypes.object).isRequired,
-        visibleIndex: PropTypes.number,
+        firstVisibleIndex: PropTypes.number,
         itemWidth: PropTypes.number,
         scrollStepDistance: PropTypes.number,
         itemMargin: PropTypes.number,
@@ -32,7 +32,7 @@ class Carousel extends Component {
     }
 
     static defaultProps = {
-        visibleIndex: 0,
+        firstVisibleIndex: 0,
         itemWidth: 50,
         scrollStepDistance: 3,
         controlWidth: 30,
@@ -60,70 +60,82 @@ class Carousel extends Component {
      *
      * @returns {Number} Index of item to which to scroll
      */
-    getIndexToScrollTo ({totalItems, visibleIndex, direction, visibleItemsCount, scrollStepDistance}) {
+    getIndexToScrollTo ({totalItems, firstVisibleIndex, direction, visibleItemsCount, scrollStepDistance}) {
         let index,
             itemsBehindVisible,
             itemsBeyondVisible;
 
-        itemsBeyondVisible = totalItems - visibleIndex - visibleItemsCount;
-        itemsBehindVisible = visibleIndex;
+        itemsBeyondVisible = totalItems - firstVisibleIndex - visibleItemsCount;
+        itemsBehindVisible = firstVisibleIndex;
 
         if (direction === 'next') {
-            index = visibleIndex + (itemsBeyondVisible > scrollStepDistance ? scrollStepDistance : itemsBeyondVisible);
+            index = firstVisibleIndex + (itemsBeyondVisible > scrollStepDistance ? scrollStepDistance : itemsBeyondVisible);
         } else if (direction === 'previous') {
-            index = visibleIndex - (itemsBehindVisible > scrollStepDistance ? scrollStepDistance : itemsBehindVisible);
+            index = firstVisibleIndex - (itemsBehindVisible > scrollStepDistance ? scrollStepDistance : itemsBehindVisible);
         }
 
-        console.log('New Scroll Position', index);
         return index;
     }
 
-    /**
-     * Get the number of visible items which can be shown at a time
-     *
-     * @param {number} availableWidth Total available width in which items are to be shown
-     * @param {number} itemWidth Width of each individual item to be inserted
-     * @param {number} itemMargin Margin between two items
-     * @returns {}
-     */
-    getVisibleItemsCount (availableWidth, itemWidth, itemMargin) {
-        return Math.floor(availableWidth / (itemWidth + itemMargin) - itemMargin);
+    isNextButtonVisible (firstVisibleIndex, totalItems, visibleItemsCount) {
+        return firstVisibleIndex < totalItems - visibleItemsCount;
     }
 
-    getMeasurements ({visibleIndex, maxWidth, totalItems, itemWidth, controlWidth, itemMargin}) {
+    isPrevButtonVisible (firstVisibleIndex) {
+        return firstVisibleIndex > 0;
+    }
+
+    /**
+     * Get number of items that can be shown at a point in time
+     *
+     * @param {Object} options Arguments in an object because they are too many
+     * @property {number} firstVisibleIndex Index to which the carousel is scrolled to i.e first visible index
+     * @property {number} maxWidth Maximum width available to the carousel
+     * @property {number} totalItems Total number of items to be shown
+     * @property {number} itemWidth Width of each item
+     * @property {number} controlWidth Width of each control button
+     * @property {number} itemMargin Margin between items
+     * @returns {number}
+     */
+    getVisibleItemsCount ({firstVisibleIndex, maxWidth, totalItems, itemWidth, controlWidth, itemMargin}) {
         let availableWidth,
-            nextButtonVisible,
-            prevButtonVisible,
-            visibleItemIndeces,
+            calculateVisibleItemsCount,
             visibleItemsCount;
 
-        availableWidth = maxWidth;
-        prevButtonVisible = visibleIndex > 0;
-
-        if (prevButtonVisible) {
-            availableWidth -= controlWidth + itemMargin;
-        }
-
-        visibleItemsCount = this.getVisibleItemsCount(availableWidth, itemWidth, itemMargin);
-
-        nextButtonVisible = visibleIndex < totalItems - visibleItemsCount;
-
-        if (nextButtonVisible) {
-            availableWidth -= controlWidth + itemMargin;
-            visibleItemsCount = this.getVisibleItemsCount(availableWidth, itemWidth, itemMargin);
-        }
-
-        visibleItemIndeces = _.range(visibleIndex, visibleItemsCount + visibleIndex);
-
-        return {
-            nextButtonVisible,
-            prevButtonVisible,
-            visibleItemsCount,
-            visibleItemIndeces
+        /**
+         * Get the number of visible items which can be shown at a time
+         *
+         * @param {number} fullWidth Total available width in which items are to be shown
+         * @param {number} elementWidth Width of each individual item to be inserted
+         * @param {number} elementMargin Margin between two items
+         * @returns {number}
+         */
+        // Keeping this function inside because
+        // a) it's only need to be used internally in this function
+        // b) All names I could come up for it can confuse user for this.getVisibleItemsCount
+        calculateVisibleItemsCount = (fullWidth, elementWidth, elementMargin) => {
+            return Math.floor(fullWidth / (elementWidth + elementMargin) - elementMargin);
         };
+
+        availableWidth = maxWidth;
+
+        if (this.isPrevButtonVisible(firstVisibleIndex)) {
+            availableWidth -= controlWidth + itemMargin;
+        }
+
+        visibleItemsCount = calculateVisibleItemsCount(availableWidth, itemWidth, itemMargin);
+
+        if (this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount)) {
+            availableWidth -= controlWidth + itemMargin;
+            visibleItemsCount = calculateVisibleItemsCount(availableWidth, itemWidth, itemMargin);
+        }
+
+        return visibleItemsCount;
     }
 
     render () {
+        // declaring so many variables instead of directly using props to stay consistent with the coding
+        // style adopted for other components
         let activeItemId,
             controlWidth,
             getItemJsx,
@@ -131,44 +143,49 @@ class Carousel extends Component {
             itemWidth,
             items,
             maxWidth,
+            nextButtonVisible,
+            prevButtonVisible,
             scrollStepDistance,
             scrollTo,
             totalItems,
-            visibleIndex;
+            firstVisibleIndex,
+            visibleItemIndeces,
+            visibleItemsCount;
 
         maxWidth = this.state.maxWidth;
         items = this.props.items;
         controlWidth = this.props.controlWidth;
         activeItemId = this.props.activeItemId;
-        visibleIndex = this.props.visibleIndex;
+        firstVisibleIndex = this.props.firstVisibleIndex;
         itemWidth = this.props.itemWidth;
         scrollStepDistance = this.props.scrollStepDistance;
         itemMargin = this.props.itemMargin;
         totalItems = items.length;
-
-        /* eslint-disable one-var,lines-around-comment */
-        let {
-            nextButtonVisible,
-            prevButtonVisible,
-            visibleItemsCount,
-            visibleItemIndeces
-        } = this.getMeasurements({
-            visibleIndex,
+        prevButtonVisible = this.isPrevButtonVisible(firstVisibleIndex);
+        visibleItemsCount = this.getVisibleItemsCount({
+            firstVisibleIndex,
             maxWidth,
             totalItems,
             itemWidth,
             controlWidth,
             itemMargin
         });
-        /* eslint-enable */
+        nextButtonVisible = this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+        visibleItemIndeces = _.range(firstVisibleIndex, visibleItemsCount + firstVisibleIndex);
 
+        /**
+         * Helper function to avoid typing so many variables twice for two control buttons since most of the variables are already in scope
+         *
+         * @param {string} direction direction in which to scroll
+         * @returns {undefined}
+         */
         scrollTo = (direction) => {
             let index;
 
             index = this.getIndexToScrollTo({
                 direction,
                 totalItems,
-                visibleIndex,
+                firstVisibleIndex,
                 visibleItemsCount,
                 scrollStepDistance
             });
@@ -176,50 +193,63 @@ class Carousel extends Component {
             this.props.onItemsScroll(index);
         };
 
+        /**
+         * Creates JSX for one item
+         *
+         * @param {JSX} item Valid JSX for the item's content
+         * @param {number} index Index of item in the items array
+         *
+         * @returns {JSX}
+         */
         getItemJsx = (item, index) => {
             let isVisible;
 
             isVisible = _.contains(visibleItemIndeces, index);
 
+            /*
+             * Here we could return only those items which need be visible, but I am returning all.
+             * Since React does optimal DOM operations, rendering all items at once and then updating their
+             * style is much less expensive then rendering a set of new list-items everytime.
+             */
             return <li
-            styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
-            style={{
-                width: itemWidth,
-                marginRight: itemMargin,
-                display: isVisible ? 'list-item' : 'none'
-            }}
-            key={item.key}
-            onClick={() => this.props.onItemActivate(item.key)}>
-                <span>{item}</span>
-                </li>;
+                       styleName={`cell${activeItemId === item.key ? '-active' : ''}`}
+                       style={{
+                           width: itemWidth,
+                           marginRight: itemMargin,
+                           display: isVisible ? 'list-item' : 'none'
+                       }}
+                       key={item.key}
+                       onClick={() => this.props.onItemActivate(item.key)}>
+                       <span>{item}</span>
+            </li>;
         };
 
         return <div styleName="wrapper" ref="wrapper">
-            <ul styleName='carousel'>
+                <ul styleName='carousel'>
 
-            <li styleName="control-cell-previous"
-        style={{
-            width: controlWidth,
-            marginRight: itemMargin,
-            display: prevButtonVisible ? 'list-item' : 'none'
-        }}
-        onClick={() => scrollTo('previous')}>
-            <span styleName="control-icon-previous"></span>
-            </li>
+                    <li styleName="control-cell-previous"
+                        style={{
+                            width: controlWidth,
+                            marginRight: itemMargin,
+                            display: prevButtonVisible ? 'list-item' : 'none'
+                        }}
+                        onClick={() => scrollTo('previous')}>
+                        <span styleName="control-icon-previous"></span>
+                    </li>
 
-            {items.map(getItemJsx)}
+                    {items.map(getItemJsx)}
 
-            <li styleName="control-cell-next"
-        style={{
-            width: controlWidth,
-            display: nextButtonVisible ? 'list-item' : 'none'
-        }}
-        onClick={() => scrollTo('next')} >
-            <span styleName="control-icon-next"></span>
-            </li>
+                    <li styleName="control-cell-next"
+                        style={{
+                            width: controlWidth,
+                            display: nextButtonVisible ? 'list-item' : 'none'
+                        }}
+                        onClick={() => scrollTo('next')} >
+                        <span styleName="control-icon-next"></span>
+                    </li>
 
-            </ul>
-            </div>;
+                </ul>
+        </div>;
     }
 }
 

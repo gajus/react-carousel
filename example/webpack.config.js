@@ -1,6 +1,6 @@
 /* eslint-disable no-process-env, id-match */
 
-let ExtractTextPlugin,
+var ExtractTextPlugin,
     alias,
     devServer,
     path,
@@ -38,7 +38,7 @@ devServer = {
 module.exports = {
     devtool: 'eval-source-map',
     debug: true,
-    devServer,
+    devServer: devServer,
     context: __dirname,
     entry: {
         app: [
@@ -85,6 +85,6 @@ module.exports = {
         ]
     },
     resolve: {
-        alias
+        alias: alias
     }
 };
