@@ -114,6 +114,8 @@ class Carousel extends Component {
     getVisibleItemsCount ({firstVisibleIndex, maxWidth, totalItems, itemWidth, controlWidth, itemMargin}) {
         let availableWidth,
             calculateVisibleItemsCount,
+            nextButtonVisible,
+            prevButtonVisible,
             visibleItemsCount;
 
         /**
@@ -132,14 +134,16 @@ class Carousel extends Component {
         };
 
         availableWidth = maxWidth;
+        prevButtonVisible = this.isPrevButtonVisible(firstVisibleIndex);
 
-        if (this.isPrevButtonVisible(firstVisibleIndex)) {
+        if (prevButtonVisible) {
             availableWidth -= controlWidth + itemMargin;
         }
 
         visibleItemsCount = calculateVisibleItemsCount(availableWidth, itemWidth, itemMargin);
+        nextButtonVisible = this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-        if (this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount)) {
+        if (nextButtonVisible) {
             availableWidth -= controlWidth + itemMargin;
             visibleItemsCount = calculateVisibleItemsCount(availableWidth, itemWidth, itemMargin);
         }
@@ -152,6 +156,7 @@ class Carousel extends Component {
         // style adopted for other components
         let activeItemId,
             controlWidth,
+            firstVisibleIndex,
             getItemJsx,
             itemMargin,
             itemWidth,
@@ -162,7 +167,6 @@ class Carousel extends Component {
             scrollStepDistance,
             scrollTo,
             totalItems,
-            firstVisibleIndex,
             visibleItemIndeces,
             visibleItemsCount;
 

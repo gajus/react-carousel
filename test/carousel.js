@@ -1,4 +1,5 @@
 /* global describe, it, before, global */
+/* eslint-disable no-unused-expressions */
 import chai, {
     expect
 } from 'chai';
@@ -30,18 +31,18 @@ describe('Carousel', () => {
 
             act1 = Carousel.prototype.getIndexToScrollTo({
                 totalItems: 10,
-                visibleIndex: 0,
+                firstVisibleIndex: 0,
                 direction: 'next',
-                displayWindowSize: 4,
-                stepDistance: 9
+                visibleItemsCount: 4,
+                scrollStepDistance: 9
             });
 
             act2 = Carousel.prototype.getIndexToScrollTo({
                 totalItems: 10,
-                visibleIndex: 6,
+                firstVisibleIndex: 6,
                 direction: 'next',
-                displayWindowSize: 5,
-                stepDistance: 6
+                visibleItemsCount: 5,
+                scrollStepDistance: 6
             });
 
             expect(act1).to.be.below(11);
@@ -54,17 +55,17 @@ describe('Carousel', () => {
 
             act1 = Carousel.prototype.getIndexToScrollTo({
                 totalItems: 10,
-                visibleIndex: 0,
+                firstVisibleIndex: 0,
                 direction: 'previous',
-                displayWindowSize: 4,
-                stepDistance: 9
+                visibleItemsCount: 4,
+                scrollStepDistance: 9
             });
             act2 = Carousel.prototype.getIndexToScrollTo({
                 totalItems: 10,
-                visibleIndex: 4,
+                firstVisibleIndex: 4,
                 direction: 'previous',
-                displayWindowSize: 4,
-                stepDistance: 6
+                visibleItemsCount: 4,
+                scrollStepDistance: 6
             });
 
             expect(act1).to.not.be.below(0);
@@ -73,14 +74,105 @@ describe('Carousel', () => {
     });
 
     describe('.isNextButtonVisible', () => {
-        it(`doesn't give the wrong results`);
+        context('all items are visible', () => {
+            it(`returns false`, () => {
+                let firstVisibleIndex,
+                    isNextButtonVisible,
+                    totalItems,
+                    visibleItemsCount;
+
+                firstVisibleIndex = 0;
+                totalItems = 10;
+                visibleItemsCount = 10;
+
+                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+
+                expect(isNextButtonVisible).to.be.false;
+            });
+        });
+
+        context('no more items to display', () => {
+            it(`returns false`, () => {
+                let firstVisibleIndex,
+                    isNextButtonVisible,
+                    totalItems,
+                    visibleItemsCount;
+
+                firstVisibleIndex = 6;
+                totalItems = 10;
+                visibleItemsCount = 4;
+
+                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+
+                expect(isNextButtonVisible).to.be.false;
+            });
+        });
+
+        context('there are items to display', () => {
+            it(`returns true`, () => {
+                let firstVisibleIndex,
+                    isNextButtonVisible,
+                    totalItems,
+                    visibleItemsCount;
+
+                firstVisibleIndex = 5;
+                totalItems = 10;
+                visibleItemsCount = 4;
+
+                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+
+                expect(isNextButtonVisible).to.be.true;
+            });
+        });
     });
 
     describe('.isPrevButtonVisible', () => {
-        it(`doesn't give the wrong results`);
+        it(`returns false if carousel isn't scrolled`, () => {
+            let isPrevButtonVisible;
+
+            isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
+
+            expect(isPrevButtonVisible).to.be.false;
+        });
+
+        it(`returns true if crousel is scrolled`, () => {
+            let isPrevButtonVisible;
+
+            isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
+
+            expect(isPrevButtonVisible).to.be.true;
+        });
     });
 
     describe('getVisibleItemsCount', () => {
-        it(`doesn't give the wrong results`);
+        // I dunno what to test for :-(
+        it(`returns correct results`, () => {
+            let countWithMargin,
+                countWithNoMargin,
+                expectedWithMargin,
+                expectedWithNoMargin;
+
+            expectedWithNoMargin = (500 - 20) / 40;
+            expectedWithMargin = Math.floor((500 - 22) / 41 - 1);
+            countWithNoMargin = Carousel.prototype.getVisibleItemsCount({
+                firstVisibleIndex: 4,
+                maxWidth: 500,
+                totalItems: 10,
+                itemWidth: 40,
+                controlWidth: 10,
+                itemMargin: 0
+            });
+            countWithMargin = Carousel.prototype.getVisibleItemsCount({
+                firstVisibleIndex: 4,
+                maxWidth: 500,
+                totalItems: 10,
+                itemWidth: 40,
+                controlWidth: 10,
+                itemMargin: 1
+            });
+
+            expect(countWithNoMargin).to.be.equal(expectedWithNoMargin);
+            expect(countWithMargin).to.be.equal(expectedWithMargin);
+        });
     });
 });
