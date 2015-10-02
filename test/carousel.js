@@ -72,53 +72,15 @@ describe('Carousel', () => {
         });
     });
 
-    describe('.getMeasurements', () => {
-        it('should give correct measures', () => {
-            let expected1,
-                expected2,
-                input1,
-                input2,
-                measurements1,
-                measurements2;
+    describe('.isNextButtonVisible', () => {
+        it(`doesn't give the wrong results`);
+    });
 
-            input1 = {
-                maxWidth: 500,
-                controlButtonWidth: 30,
-                totalItems: 15,
-                displayWindowSize: 5,
-                itemMargin: 1,
-                visibleIndex: 0
-            };
-            measurements1 = Carousel.prototype.getMeasurements(input1);
-            expected1 = {
-                cellWidth: 93.6,
-                listPosition: -30,
-                prevButtonActive: false,
-                nextButtonActive: true,
-                listWidth: 468,
-                visibleCellIdeces: [0, 1, 2, 3, 4]
-            };
+    describe('.isPrevButtonVisible', () => {
+        it(`doesn't give the wrong results`);
+    });
 
-            input2 = {
-                maxWidth: 500,
-                controlButtonWidth: 30,
-                totalItems: 15,
-                displayWindowSize: 5,
-                itemMargin: 1,
-                visibleIndex: 3
-            };
-            expected2 = {
-                cellWidth: 87.6,
-                listPosition: -262.79999999999995,
-                prevButtonActive: true,
-                nextButtonActive: true,
-                listWidth: 438,
-                visibleCellIdeces: [3, 4, 5, 6, 7]
-            };
-            measurements2 = Carousel.prototype.getMeasurements(input2);
-
-            expect(measurements1).to.be.deep.equal(expected1);
-            expect(measurements2).to.be.deep.equal(expected2);
-        });
+    describe('getVisibleItemsCount', () => {
+        it(`doesn't give the wrong results`);
     });
 });

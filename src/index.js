@@ -77,10 +77,24 @@ class Carousel extends Component {
         return index;
     }
 
+    /**
+     * Tells if the next button shall be visible or not
+     *
+     * @param {number} firstVisibleIndex Index of the item to which the carousel is scrolled to
+     * @param {number} totalItems Total number of items shown in the carousel
+     * @param {number} visibleItemsCount Number Number of items visible at the moment
+     * @returns {boolean}
+     */
     isNextButtonVisible (firstVisibleIndex, totalItems, visibleItemsCount) {
         return firstVisibleIndex < totalItems - visibleItemsCount;
     }
 
+    /**
+     * Tells if the previous control button shall be visible or not
+     *
+     * @param {number} firstVisibleIndex Index of the item to which the carousel is scrolled to
+     * @returns {boolean}
+     */
     isPrevButtonVisible (firstVisibleIndex) {
         return firstVisibleIndex > 0;
     }
