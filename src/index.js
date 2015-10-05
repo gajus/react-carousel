@@ -238,7 +238,7 @@ class Carousel extends Component {
                        }}
                        key={item.key}
                        onClick={() => this.props.onItemActivate(item.key)}>
-                       <span>{item}</span>
+                       {item}
             </li>;
         };
 
