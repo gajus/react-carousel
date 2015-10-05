@@ -24,9 +24,11 @@
   "engines": {
     "node": "~4.0.0"
   },
+  "peerDependencies": {
+    "react-css-modules": "^3.5.1"
+  }
   "dependencies": {
     "lodash": "^3.10.1",
-    "react-css-modules": "^3.5.1",
     "react-hot-loader": "^1.3.0"
   },
   "devDependencies": {
