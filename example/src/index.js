@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import _ from 'lodash';
 import Carousel, {
     actions
 } from '@applaudience/react-carousel';
@@ -42,7 +41,7 @@ class App extends React.Component {
     render () {
         let items;
 
-        items = _.map(_.range(1, 16), (num) => {
+        items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((num) => {
             return <span
             style={{marginTop: '20px',
                     fontSize: '32px',
