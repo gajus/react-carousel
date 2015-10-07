@@ -18,7 +18,7 @@ devServer = {
     historyApiFallback: true,
     host: '127.0.0.1',
     port: 8000,
-    hot: false
+    hot: true
 };
 
 module.exports = {
@@ -28,6 +28,8 @@ module.exports = {
     context: __dirname,
     entry: {
         app: [
+            `webpack-dev-server/client?http://${devServer.host}:${devServer.port}`,
+            'webpack/hot/only-dev-server',
             './src/'
         ]
     },
@@ -41,6 +43,7 @@ module.exports = {
             allChunks: true
         }),
         new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.OldWatchingPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.NoErrorsPlugin()
@@ -50,7 +53,16 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(__dirname, 'src')
+                    path.resolve(__dirname, 'src'),
+                    path.resolve(__dirname, '../src')
+                ],
+                loader: 'react-hot'
+            },
+            {
+                test: /\.js$/,
+                include: [
+                    path.resolve(__dirname, 'src'),
+                    path.resolve(__dirname, '../src')
                 ],
                 loader: 'babel'
             },
@@ -63,5 +75,11 @@ module.exports = {
                 loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass')
             }
         ]
+    },
+    resolve: {
+        alias: {
+            react: path.resolve(__dirname, './node_modules/react'),
+            '@applaudience/react-carousel': path.resolve(__dirname, '../src')
+        }
     }
 };
