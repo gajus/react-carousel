@@ -1,6 +1,6 @@
 {
   "name": "@applaudience/react-carousel",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Carousel react component",
   "main": "dist/index.js",
   "scripts": {
