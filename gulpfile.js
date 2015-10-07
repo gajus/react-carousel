@@ -6,7 +6,7 @@ import babel from 'gulp-babel';
 import sourcemaps from 'gulp-sourcemaps';
 import istanbul from 'gulp-istanbul';
 import babelInstanbul from 'babel-istanbul';
-import merge from 'merge-stream';
+import del from 'del';
 
 gulp.task('lint', () => {
     return gulp
@@ -49,21 +49,18 @@ gulp.task('scss-lint', () => {
 });
 
 gulp.task('copy-res', () => {
-    let copyScss,
-        copyStatic;
-
-    copyScss = gulp
-        .src(['./src/*.scss'])
+    return gulp
+        .src('./src/**/*')
         .pipe(gulp.dest('./dist'));
-
-    copyStatic = gulp
-        .src('./src/static/**/*')
-        .pipe(gulp.dest('./dist/static'));
-
-    return merge(copyScss, copyStatic);
 });
 
-gulp.task('build', ['copy-res'], () => {
+gulp.task('clean', () => {
+    return del([
+        './dist/**/*'
+    ]);
+});
+
+gulp.task('build', ['clean', 'copy-res'], () => {
     return gulp
         .src('./src/**/*.js')
         .pipe(sourcemaps.init())
