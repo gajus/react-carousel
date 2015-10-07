@@ -13,7 +13,8 @@ class App extends React.Component {
         this.state = {
             visibleIndex: 0,
             activeItemId: '0',
-            scrollStepDistance: 3
+            scrollStepDistance: 3,
+            itemMargin: 0
         };
     }
 
@@ -23,6 +24,23 @@ class App extends React.Component {
 
     activateItem (id) {
         this.setState({activeItemId: id});
+    }
+
+    setItemMargin (event) {
+        let newMargin;
+
+        newMargin = parseInt(event.target.value, 10);
+
+        if (newMargin < 0) {
+            newMargin = 0;
+        }
+
+        if (newMargin > 5) {
+            newMargin = 5;
+        }
+
+        this.setState({itemMargin: newMargin});
+        event.target.value = newMargin;
     }
 
     render () {
@@ -55,7 +73,26 @@ class App extends React.Component {
             onItemsScroll={this.scrollToIndex.bind(this)}
             controlWidth={25}
             itemWidth={50}
+            itemMargin={this.state.itemMargin}
         />
+
+        <div style={{margin: '30px 10px'}}>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Item Margin: </td>
+                        <td>
+                            <input
+                                ref="itemMargin"
+                                type="number"
+                                onChange={this.setItemMargin.bind(this)}
+                                defaultValue={this.state.itemMargin} />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         </div>;
     }
 }
