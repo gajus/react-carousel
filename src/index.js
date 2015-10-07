@@ -130,7 +130,7 @@ class Carousel extends Component {
         // a) it's only need to be used internally in this function
         // b) All names I could come up for it can confuse user for this.getVisibleItemsCount
         calculateVisibleItemsCount = (fullWidth, elementWidth, elementMargin) => {
-            return Math.floor(fullWidth / (elementWidth + elementMargin) - elementMargin);
+            return Math.floor(fullWidth / (elementWidth + elementMargin));
         };
 
         availableWidth = maxWidth;

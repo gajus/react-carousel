@@ -35,10 +35,6 @@ class App extends React.Component {
             newMargin = 0;
         }
 
-        if (newMargin > 5) {
-            newMargin = 5;
-        }
-
         this.setState({itemMargin: newMargin});
         event.target.value = newMargin;
     }
