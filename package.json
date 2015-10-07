@@ -3,30 +3,21 @@
   "version": "0.2.3",
   "description": "Carousel react component",
   "main": "dist/index.js",
-  "directories": {
-    "example": "example",
-    "test": "test"
-  },
   "scripts": {
-    "gulp": "babel-node ./node_modules/gulp/bin/gulp.js",
+    "gulp": "babel-node ./node_modules/.bin/gulp",
     "prepublish": "npm run gulp build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/applaudience/react-carousal.git"
   },
-  "author": "ckhabra@gmail.com (https://channikhabra.github.io/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/applaudience/react-showtimes-carousal/issues"
-  },
-  "homepage": "https://github.com/applaudience/react-showtimes-carousal#readme",
+  "license": "UNLICENSED",
   "engines": {
     "node": "~4.0.0"
   },
   "peerDependencies": {
     "react-css-modules": "^3.5.1"
-  }
+  },
   "dependencies": {
     "lodash": "^3.10.1",
     "react-hot-loader": "^1.3.0"
