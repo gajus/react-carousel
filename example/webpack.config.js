@@ -63,5 +63,11 @@ module.exports = {
                 loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass')
             }
         ]
+    },
+    resolve: {
+        fallback: path.resolve(__dirname, './node_modules')
+    },
+    resolveLoader: {
+        fallback: path.resolve(__dirname, './node_modules')
     }
 };
