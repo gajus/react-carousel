@@ -4,55 +4,28 @@
   "description": "Carousel react component",
   "main": "dist/index.js",
   "scripts": {
-    "gulp": "babel-node ./node_modules/.bin/gulp",
-    "prepublish": "npm run gulp build"
+    "pragmatist": "node ./node_modules/.bin/pragmatist",
+    "lint": "npm run pragmatist lint",
+    "test": "npm run pragmatist test",
+    "build": "npm run pragmatist build",
+    "watch": "npm run pragmatist watch",
+    "preversion": "npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/applaudience/react-carousal.git"
   },
-  "license": "UNLICENSED",
   "engines": {
-    "node": "~4.0.0"
-  },
-  "peerDependencies": {
-    "react-css-modules": "^3.5.1"
+    "node": "~5.0.0"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "react-hot-loader": "^1.3.0"
+    "lodash": "^3.10.1"
   },
   "devDependencies": {
-    "babel": "^5.8.23",
-    "babel-core": "^5.8.25",
-    "babel-eslint": "^4.1.3",
-    "babel-istanbul": "^0.3.20",
-    "babel-loader": "^5.3.2",
-    "chai": "^3.3.0",
-    "css-loader": "^0.19.0",
-    "del": "^2.0.2",
-    "extract-text-webpack-plugin": "^0.8.2",
-    "file-loader": "^0.8.4",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-eslint": "^1.0.0",
-    "gulp-istanbul": "^0.10.1",
-    "gulp-mocha": "^2.1.3",
-    "gulp-sass": "^2.0.4",
-    "gulp-scss-lint": "^0.3.4",
-    "gulp-sourcemaps": "^1.6.0",
-    "image-webpack-loader": "^1.6.1",
-    "imagemin": "^3.2.0",
-    "mocha": "^2.3.3",
-    "mocha-lcov-reporter": "^1.0.0",
+    "chai": "^3.4.1",
     "mockery": "^1.4.0",
-    "node-sass": "^3.3.3",
-    "react": "^0.14.0-rc1",
-    "react-dom": "^0.14.0-rc1",
-    "sass": "^0.5.0",
-    "sass-loader": "^3.0.0",
-    "sinon": "^1.17.1",
-    "sinon-chai": "^2.8.0",
-    "style-loader": "^0.12.4"
+    "pragmatist": "^1.4.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
   }
 }

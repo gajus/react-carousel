@@ -1,3 +1,8 @@
+$color-white: #fff;
+$color-cell: #adafb1;
+$color-cell-bg: #303b41;
+$color-active-cell-bg: #29a9d8;
+
 .clearfix {
     &:after {
         display: table;
@@ -23,11 +28,13 @@
     composes: clearfix;
 
     position: relative;
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
+
     overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 
     list-style-type: none;
 
@@ -49,22 +56,23 @@
     height: 100%;
     margin: 0;
     padding: 0;
+
     list-style: none;
 
     cursor: pointer;
 
     transition: visibility .2s linear .5s, opacity .3s linear;
 
-    color: #adafb1;
-    background: #303b41;
+    color: $color-cell;
+    background: $color-cell-bg;
 
     &:hover {
-        background: darken(#303b41, 10);
+        background: darken($color-cell-bg, 10);
     }
 
     &:active {
-        color: #fff;
-        background: darken(#303b41, 20);
+        color: $color-white;
+        background: darken($color-cell-bg, 20);
     }
 }
 
@@ -75,15 +83,15 @@
 .cell-active {
     composes: cell;
 
-    color: #fff;
-    background: #29a9d8;
+    color: $color-white;
+    background: $color-active-cell-bg;
 
     &:hover {
-        background: darken(#29a9d8, 10);
+        background: darken($color-active-cell-bg, 10);
     }
 
     &:active {
-        background: darken(#29a9d8, 20);
+        background: darken($color-active-cell-bg, 20);
     }
 }
 
@@ -93,14 +101,16 @@
 
 .control-cell {
     composes: cell clearfix;
-    display: block;
+
     position: relative;
 
-    width: 30px;
-    padding: 0;
-    margin: 0;
+    display: block;
 
-    color: #29a9d8;
+    width: 30px;
+    margin: 0;
+    padding: 0;
+
+    color: $color-active-cell-bg;
 }
 
 .control-cell-next {
