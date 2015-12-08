@@ -1,6 +1,6 @@
 {
   "name": "@applaudience/react-carousel",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Carousel react component",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/applaudience/react-carousal.git"
+    "url": "git@github.com:applaudience/react-carousel.git"
   },
   "engines": {
     "node": "~5.0.0"
