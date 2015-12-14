@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Carousel, {
-    actions
-} from '@applaudience/react-carousel';
+import Carousel from 'react-carousel';
 
 class App extends React.Component {
     constructor (props) {

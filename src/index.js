@@ -160,17 +160,19 @@ class Carousel extends Component {
      * @returns {undefined}
      */
     handleScrollToDirection = (direction, visibleItemsCount) => {
-        let index;
+        return () => {
+            let index;
 
-        index = this.getIndexToScrollTo({
-            direction,
-            totalItems: this.props.items.length,
-            firstVisibleIndex: this.props.firstVisibleIndex,
-            visibleItemsCount,
-            scrollStepDistance: this.props.firstVisibleIndex
-        });
+            index = this.getIndexToScrollTo({
+                direction,
+                totalItems: this.props.items.length,
+                firstVisibleIndex: this.props.firstVisibleIndex,
+                visibleItemsCount,
+                scrollStepDistance: this.props.scrollStepDistance
+            });
 
-        this.props.onItemsScroll(index);
+            this.props.onItemsScroll(index);
+        };
     }
 
     handleActivateItem = (item) => {
@@ -196,11 +198,13 @@ class Carousel extends Component {
              */
         return (item, index) => {
             let isVisible,
+                self,
                 visibleItemIndeces;
 
+            self = this;
             visibleItemIndeces = _.range(this.props.firstVisibleIndex, visibleItemsCount + this.props.firstVisibleIndex);
 
-            isVisible = _.contains(visibleItemIndeces, index);
+            isVisible = _.includes(visibleItemIndeces, index);
 
             /*
              * Here we could return only those items which need be visible, but I am returning all.
@@ -209,7 +213,9 @@ class Carousel extends Component {
              */
             return <li
                 key={item.key}
-                onClick={this.handleActivateItem}
+                onClick={function () {
+                    self.handleActivateItem(item);
+                }}
                 style={{
                     width: this.props.itemWidth,
                     marginRight: this.props.itemMargin,
@@ -268,7 +274,7 @@ class Carousel extends Component {
                         <span styleName='control-icon-previous'></span>
                     </li>
 
-                    {items.map(this.getItemJsx(visibleItemsCount))}
+                    {_.map(items, this.getItemJsx(visibleItemsCount))}
 
                     <li onClick={this.handleScrollToDirection('next', visibleItemsCount)}
                         style={{

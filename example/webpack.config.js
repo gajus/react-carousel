@@ -65,9 +65,16 @@ module.exports = {
         ]
     },
     resolve: {
-        fallback: path.resolve(__dirname, './node_modules')
+        fallback: path.resolve(__dirname, './node_modules'),
+        alias: {
+            react: path.resolve(__dirname, './node_modules/react'),
+            'react-dom': path.resolve(__dirname, './node_modules/react-dom')
+        }
     },
     resolveLoader: {
         fallback: path.resolve(__dirname, './node_modules')
+    },
+    node: {
+        fs: 'empty'
     }
 };
