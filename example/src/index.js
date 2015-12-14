@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Carousel from 'react-carousel';
+import _ from 'lodash';
 
 class App extends React.Component {
     constructor (props) {
@@ -9,21 +10,21 @@ class App extends React.Component {
 
         this.state = {
             visibleIndex: 0,
-            activeItemId: '0',
+            activeItemId: '1',
             scrollStepDistance: 3,
-            itemMargin: 0
+            itemMargin: 1
         };
     }
 
-    scrollToIndex (index) {
+    handleScrollToIndex = (index) => {
         this.setState({visibleIndex: index});
     }
 
-    activateItem (id) {
+    handleActivateItem = (id) => {
         this.setState({activeItemId: id});
     }
 
-    setItemMargin (event) {
+    handleSetItemMargin = (event) => {
         let newMargin;
 
         newMargin = parseInt(event.target.value, 10);
@@ -39,53 +40,71 @@ class App extends React.Component {
     render () {
         let items;
 
-        items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((num) => {
+        items = _.map(_.range(1, 15), (num) => {
             return <span
-            style={{marginTop: '20px',
-                    fontSize: '32px',
-                    display: 'block',
-                    width: '100%',
-                    textAlign: 'center'}}
-            key={String(num)} >{num}</span>;
+                key={String(num)}
+                style={{marginTop: '20px',
+                        fontSize: '32px',
+                        display: 'block',
+                        width: '100%',
+                        textAlign: 'center'}}
+                   >{num}</span>;
         });
 
-        return <div
-        ref="wrapper"
-        style={{
-            height: 100,
-            background: '#99A9D8',
-            maxWidth: 500,
-            minWidth: 200
-        }} >
-        <Carousel
-            items={items}
-            firstVisibleIndex={this.state.visibleIndex}
-            activeItemId={this.state.activeItemId}
-            scrollStepDistance={this.state.scrollStepDistance}
-            onItemActivate={this.activateItem.bind(this)}
-            onItemsScroll={this.scrollToIndex.bind(this)}
-            controlWidth={25}
-            itemWidth={50}
-            itemMargin={this.state.itemMargin}
-        />
+        return <div style={{
+            fontFamily: 'sans-serif'
+        }}
+               >
+            <h1>react-carousel demo</h1>
+            <h3>Please go <a href='https://github.com/gajus/react-carousel'>here</a> for docs and source</h3>
 
-        <div style={{margin: '30px 10px'}}>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Item Margin: </td>
-                        <td>
-                            <input
-                                ref="itemMargin"
-                                type="number"
-                                onChange={this.setItemMargin.bind(this)}
-                                defaultValue={this.state.itemMargin} />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div
+                ref='wrapper'
+                style={{
+                    height: 100,
+                    background: '#11516B',
+                    maxWidth: 500,
+                    minWidth: 200
+                }}
+            >
 
+                <Carousel
+                    activeItemId={this.state.activeItemId}
+                    controlWidth={25}
+                    firstVisibleIndex={this.state.visibleIndex}
+                    itemMargin={this.state.itemMargin}
+                    itemWidth={50}
+                    items={items}
+                    onItemActivate={this.handleActivateItem}
+                    onItemsScroll={this.handleScrollToIndex}
+                    scrollStepDistance={this.state.scrollStepDistance}
+                />
+
+                <div style={{margin: '30px 10px'}}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Item Margin: </td>
+                                <td>
+                                    <input
+                                        defaultValue={this.state.itemMargin}
+                                        onChange={this.handleSetItemMargin}
+                                        ref='itemMargin'
+                                        style={{
+                                            padding: 10,
+                                            border: '1px solid #222',
+                                            outline: 'none',
+                                            borderRadius: 4
+                                        }}
+                                        type='number'
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>;
     }
 }
