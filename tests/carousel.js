@@ -1,5 +1,4 @@
-/* global describe, it, before, global */
-/* eslint-disable no-unused-expressions */
+/* eslint-disable max-nested-callbacks */
 
 import chai, {
     expect
@@ -18,8 +17,11 @@ describe('Carousel', () => {
         });
         mockery.registerMock('./carousel.scss', {});
 
+        /* eslint-disable import/no-require, global-require */
         Carousel = require('./../src/index.js');
+        /* eslint-enable import/no-require, global-require */
     });
+
     afterEach(() => {
         mockery.deregisterAll();
         mockery.disable();
@@ -88,7 +90,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.false;
+                expect(isNextButtonVisible).to.equal(false);
             });
         });
 
@@ -105,7 +107,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.false;
+                expect(isNextButtonVisible).to.equal(false);
             });
         });
 
@@ -122,7 +124,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.true;
+                expect(isNextButtonVisible).to.equal(true);
             });
         });
     });
@@ -133,7 +135,7 @@ describe('Carousel', () => {
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
 
-            expect(isPrevButtonVisible).to.be.false;
+            expect(isPrevButtonVisible).to.equal(false);
         });
 
         it('returns true if crousel is scrolled', () => {
@@ -141,7 +143,7 @@ describe('Carousel', () => {
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
 
-            expect(isPrevButtonVisible).to.be.true;
+            expect(isPrevButtonVisible).to.equal(true);
         });
     });
 
