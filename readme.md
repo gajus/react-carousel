@@ -1,6 +1,6 @@
 # react-carousel
 
-General purpose carousel component build with and for React.js
+General purpose carousel component build with and for React.js. Check a [demo here](http://gajus.github.io/react-carousel/)
 
 This component is built for react apps that strictly follow flux (or redux) architecture. It tries to be a pure component in that all its requirements are fed to it as `props` of the component.
 
