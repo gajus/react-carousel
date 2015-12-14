@@ -24,7 +24,6 @@
     "lodash": "^3.10.1"
   },
   "devDependencies": {
-    "babel-plugin-lodash": "^1.0.2",
     "chai": "^3.4.1",
     "mockery": "^1.4.0",
     "pragmatist": "^2.3.1",
