@@ -1,8 +1,9 @@
 {
   "name": "react-carousel",
   "version": "3.1.0",
-  "description": "Carousel react component",
-  "main": "dist/index.js",
+  "description": "React carousel component.",
+  "main": "./dist/index.js",
+  "license": "BSD-3-Clause",
   "scripts": {
     "pragmatist": "node ./node_modules/.bin/pragmatist --browser",
     "lint": "npm run pragmatist lint",
@@ -14,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:applaudience/react-carousel.git"
+    "url": "git@github.com:gajus/react-carousel.git"
   },
   "engines": {
     "node": "~5.2.0"
