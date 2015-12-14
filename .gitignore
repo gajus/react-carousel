@@ -1,5 +1,9 @@
+node_modules
 coverage
-npm-debug.log
-.tern-port
-.DS_Store
 dist
+*.log
+.*
+!.gitignore
+!.npmignore
+!.babelrc
+!.travis.yml

@@ -1,5 +1,6 @@
 /* global describe, it, before, global */
 /* eslint-disable no-unused-expressions */
+
 import chai, {
     expect
 } from 'chai';
@@ -17,7 +18,7 @@ describe('Carousel', () => {
         });
         mockery.registerMock('./carousel.scss', {});
 
-        Carousel = require('../src/index.js');
+        Carousel = require('./../src/index.js');
     });
     afterEach(() => {
         mockery.deregisterAll();
@@ -75,7 +76,7 @@ describe('Carousel', () => {
 
     describe('.isNextButtonVisible', () => {
         context('all items are visible', () => {
-            it(`returns false`, () => {
+            it('returns false', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -92,7 +93,7 @@ describe('Carousel', () => {
         });
 
         context('no more items to display', () => {
-            it(`returns false`, () => {
+            it('returns false', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -109,7 +110,7 @@ describe('Carousel', () => {
         });
 
         context('there are items to display', () => {
-            it(`returns true`, () => {
+            it('returns true', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -127,7 +128,7 @@ describe('Carousel', () => {
     });
 
     describe('.isPrevButtonVisible', () => {
-        it(`returns false if carousel isn't scrolled`, () => {
+        it('returns false if carousel isn\'t scrolled', () => {
             let isPrevButtonVisible;
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
@@ -135,7 +136,7 @@ describe('Carousel', () => {
             expect(isPrevButtonVisible).to.be.false;
         });
 
-        it(`returns true if crousel is scrolled`, () => {
+        it('returns true if crousel is scrolled', () => {
             let isPrevButtonVisible;
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
@@ -146,7 +147,7 @@ describe('Carousel', () => {
 
     describe('getVisibleItemsCount', () => {
         // I dunno what to test for :-(
-        it(`returns correct results`, () => {
+        it('returns correct results', () => {
             let countWithMargin,
                 countWithNoMargin,
                 expectedWithMargin,

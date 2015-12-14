@@ -27,6 +27,9 @@
     "chai": "^3.4.1",
     "mockery": "^1.4.0",
     "pragmatist": "^2.3.1",
+    "react": "^0.14.3",
+    "react-css-modules": "^3.6.3",
+    "react-dom": "^0.14.3",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   }
