@@ -21,6 +21,7 @@ describe('Carousel', () => {
         /* eslint-disable import/no-require, global-require */
         Carousel = require('../src/index.js').default;
         /* eslint-enable import/no-require, global-require */
+        Carousel = new Carousel();
     });
 
     afterEach(() => {
@@ -33,7 +34,7 @@ describe('Carousel', () => {
             let act1,
                 act2;
 
-            act1 = Carousel.prototype.getIndexToScrollTo({
+            act1 = Carousel.getIndexToScrollTo({
                 totalItems: 10,
                 firstVisibleIndex: 0,
                 direction: 'next',
@@ -41,7 +42,7 @@ describe('Carousel', () => {
                 scrollStepDistance: 9
             });
 
-            act2 = Carousel.prototype.getIndexToScrollTo({
+            act2 = Carousel.getIndexToScrollTo({
                 totalItems: 10,
                 firstVisibleIndex: 6,
                 direction: 'next',
@@ -57,14 +58,14 @@ describe('Carousel', () => {
             let act1,
                 act2;
 
-            act1 = Carousel.prototype.getIndexToScrollTo({
+            act1 = Carousel.getIndexToScrollTo({
                 totalItems: 10,
                 firstVisibleIndex: 0,
                 direction: 'previous',
                 visibleItemsCount: 4,
                 scrollStepDistance: 9
             });
-            act2 = Carousel.prototype.getIndexToScrollTo({
+            act2 = Carousel.getIndexToScrollTo({
                 totalItems: 10,
                 firstVisibleIndex: 4,
                 direction: 'previous',
@@ -89,7 +90,7 @@ describe('Carousel', () => {
                 totalItems = 10;
                 visibleItemsCount = 10;
 
-                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+                isNextButtonVisible = Carousel.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
                 expect(isNextButtonVisible).to.equal(false);
             });
@@ -106,7 +107,7 @@ describe('Carousel', () => {
                 totalItems = 10;
                 visibleItemsCount = 4;
 
-                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+                isNextButtonVisible = Carousel.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
                 expect(isNextButtonVisible).to.equal(false);
             });
@@ -123,7 +124,7 @@ describe('Carousel', () => {
                 totalItems = 10;
                 visibleItemsCount = 4;
 
-                isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+                isNextButtonVisible = Carousel.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
                 expect(isNextButtonVisible).to.equal(true);
             });
@@ -134,7 +135,7 @@ describe('Carousel', () => {
         it('returns false if carousel isn\'t scrolled', () => {
             let isPrevButtonVisible;
 
-            isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
+            isPrevButtonVisible = Carousel.isPrevButtonVisible(0);
 
             expect(isPrevButtonVisible).to.equal(false);
         });
@@ -142,7 +143,7 @@ describe('Carousel', () => {
         it('returns true if crousel is scrolled', () => {
             let isPrevButtonVisible;
 
-            isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
+            isPrevButtonVisible = Carousel.isPrevButtonVisible(4);
 
             expect(isPrevButtonVisible).to.equal(true);
         });
@@ -157,8 +158,8 @@ describe('Carousel', () => {
                 expectedWithNoMargin;
 
             expectedWithNoMargin = (500 - 20) / 40;
-            expectedWithMargin = Math.floor((500 - 22) / 41 - 1);
-            countWithNoMargin = Carousel.prototype.getVisibleItemsCount({
+            expectedWithMargin = Math.floor((500 - 22) / 41);
+            countWithNoMargin = Carousel.getVisibleItemsCount({
                 firstVisibleIndex: 4,
                 maxWidth: 500,
                 totalItems: 10,
@@ -166,7 +167,7 @@ describe('Carousel', () => {
                 controlWidth: 10,
                 itemMargin: 0
             });
-            countWithMargin = Carousel.prototype.getVisibleItemsCount({
+            countWithMargin = Carousel.getVisibleItemsCount({
                 firstVisibleIndex: 4,
                 maxWidth: 500,
                 totalItems: 10,
