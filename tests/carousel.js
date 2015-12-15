@@ -1,5 +1,6 @@
 /* global describe, it, before, global, require */
-/* eslint-disable global-require, max-nested-callbacks, import/no-require */
+/* eslint-disable max-nested-callbacks */
+
 import chai, {
     expect
 } from 'chai';
@@ -17,8 +18,11 @@ describe('Carousel', () => {
         });
         mockery.registerMock('./carousel.scss', {});
 
+        /* eslint-disable import/no-require, global-require */
         Carousel = require('../src/index.js').default;
+        /* eslint-enable import/no-require, global-require */
     });
+
     afterEach(() => {
         mockery.deregisterAll();
         mockery.disable();
@@ -87,7 +91,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.equal(false);
+                expect(isNextButtonVisible).to.equal(false);
             });
         });
 
@@ -104,7 +108,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.equal(false);
+                expect(isNextButtonVisible).to.equal(false);
             });
         });
 
@@ -121,7 +125,7 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.equal(true);
+                expect(isNextButtonVisible).to.equal(true);
             });
         });
     });
@@ -132,7 +136,7 @@ describe('Carousel', () => {
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
 
-            expect(isPrevButtonVisible).to.be.equal(false);
+            expect(isPrevButtonVisible).to.equal(false);
         });
 
         it('returns true if crousel is scrolled', () => {
@@ -140,7 +144,7 @@ describe('Carousel', () => {
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
 
-            expect(isPrevButtonVisible).to.be.equal(true);
+            expect(isPrevButtonVisible).to.equal(true);
         });
     });
 
