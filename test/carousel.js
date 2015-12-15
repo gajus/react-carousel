@@ -1,5 +1,5 @@
-/* global describe, it, before, global */
-/* eslint-disable no-unused-expressions */
+/* global describe, it, before, global, require */
+/* eslint-disable global-require, max-nested-callbacks, import/no-require */
 import chai, {
     expect
 } from 'chai';
@@ -17,7 +17,7 @@ describe('Carousel', () => {
         });
         mockery.registerMock('./carousel.scss', {});
 
-        Carousel = require('../src/index.js');
+        Carousel = require('../src/index.js').default;
     });
     afterEach(() => {
         mockery.deregisterAll();
@@ -75,7 +75,7 @@ describe('Carousel', () => {
 
     describe('.isNextButtonVisible', () => {
         context('all items are visible', () => {
-            it(`returns false`, () => {
+            it('returns false', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -87,12 +87,12 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.false;
+                expect(isNextButtonVisible).to.be.equal(false);
             });
         });
 
         context('no more items to display', () => {
-            it(`returns false`, () => {
+            it('returns false', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -104,12 +104,12 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.false;
+                expect(isNextButtonVisible).to.be.equal(false);
             });
         });
 
         context('there are items to display', () => {
-            it(`returns true`, () => {
+            it('returns true', () => {
                 let firstVisibleIndex,
                     isNextButtonVisible,
                     totalItems,
@@ -121,32 +121,32 @@ describe('Carousel', () => {
 
                 isNextButtonVisible = Carousel.prototype.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-                expect(isNextButtonVisible).to.be.true;
+                expect(isNextButtonVisible).to.be.equal(true);
             });
         });
     });
 
     describe('.isPrevButtonVisible', () => {
-        it(`returns false if carousel isn't scrolled`, () => {
+        it('returns false if carousel isn\'t scrolled', () => {
             let isPrevButtonVisible;
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(0);
 
-            expect(isPrevButtonVisible).to.be.false;
+            expect(isPrevButtonVisible).to.be.equal(false);
         });
 
-        it(`returns true if crousel is scrolled`, () => {
+        it('returns true if crousel is scrolled', () => {
             let isPrevButtonVisible;
 
             isPrevButtonVisible = Carousel.prototype.isPrevButtonVisible(4);
 
-            expect(isPrevButtonVisible).to.be.true;
+            expect(isPrevButtonVisible).to.be.equal(true);
         });
     });
 
     describe('getVisibleItemsCount', () => {
         // I dunno what to test for :-(
-        it(`returns correct results`, () => {
+        it('returns correct results', () => {
             let countWithMargin,
                 countWithNoMargin,
                 expectedWithMargin,
