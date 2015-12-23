@@ -35,19 +35,19 @@ describe('Carousel', () => {
                 act2;
 
             act1 = Carousel.getIndexToScrollTo({
-                totalItems: 10,
-                firstVisibleIndex: 0,
                 direction: 'next',
-                visibleItemsCount: 4,
-                scrollStepDistance: 9
+                firstVisibleIndex: 0,
+                scrollStepDistance: 9,
+                totalItems: 10,
+                visibleItemsCount: 4
             });
 
             act2 = Carousel.getIndexToScrollTo({
-                totalItems: 10,
-                firstVisibleIndex: 6,
                 direction: 'next',
-                visibleItemsCount: 5,
-                scrollStepDistance: 6
+                firstVisibleIndex: 6,
+                scrollStepDistance: 6,
+                totalItems: 10,
+                visibleItemsCount: 5
             });
 
             expect(act1).to.be.below(11);
@@ -59,18 +59,18 @@ describe('Carousel', () => {
                 act2;
 
             act1 = Carousel.getIndexToScrollTo({
-                totalItems: 10,
-                firstVisibleIndex: 0,
                 direction: 'previous',
-                visibleItemsCount: 4,
-                scrollStepDistance: 9
+                firstVisibleIndex: 0,
+                scrollStepDistance: 9,
+                totalItems: 10,
+                visibleItemsCount: 4
             });
             act2 = Carousel.getIndexToScrollTo({
-                totalItems: 10,
-                firstVisibleIndex: 4,
                 direction: 'previous',
-                visibleItemsCount: 4,
-                scrollStepDistance: 6
+                firstVisibleIndex: 4,
+                scrollStepDistance: 6,
+                totalItems: 10,
+                visibleItemsCount: 4
             });
 
             expect(act1).to.not.be.below(0);
@@ -160,20 +160,20 @@ describe('Carousel', () => {
             expectedWithNoMargin = (500 - 20) / 40;
             expectedWithMargin = Math.floor((500 - 22) / 41);
             countWithNoMargin = Carousel.getVisibleItemsCount({
-                firstVisibleIndex: 4,
-                maxWidth: 500,
-                totalItems: 10,
-                itemWidth: 40,
                 controlWidth: 10,
-                itemMargin: 0
+                firstVisibleIndex: 4,
+                itemMargin: 0,
+                itemWidth: 40,
+                maxWidth: 500,
+                totalItems: 10
             });
             countWithMargin = Carousel.getVisibleItemsCount({
-                firstVisibleIndex: 4,
-                maxWidth: 500,
-                totalItems: 10,
-                itemWidth: 40,
                 controlWidth: 10,
-                itemMargin: 1
+                firstVisibleIndex: 4,
+                itemMargin: 1,
+                itemWidth: 40,
+                maxWidth: 500,
+                totalItems: 10
             });
 
             expect(countWithNoMargin).to.be.equal(expectedWithNoMargin);

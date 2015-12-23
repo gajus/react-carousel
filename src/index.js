@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars, lines-around-comment */
 import React, {
-    /* eslint-enable */
     Component,
     PropTypes
 } from 'react';
@@ -24,11 +22,11 @@ class Carousel extends Component {
     }
 
     static defaultProps = {
-        firstVisibleIndex: 0,
-        itemWidth: 50,
-        scrollStepDistance: 3,
         controlWidth: 30,
-        itemMargin: 1
+        firstVisibleIndex: 0,
+        itemMargin: 1,
+        itemWidth: 50,
+        scrollStepDistance: 3
     };
 
     constructor (props) {
@@ -79,23 +77,16 @@ class Carousel extends Component {
     }
 
     /**
-     * Tells if the next button shall be visible or not
-     *
-     * @param {number} firstVisibleIndex Index of the item to which the carousel is scrolled to
-     * @param {number} totalItems Total number of items shown in the carousel
-     * @param {number} visibleItemsCount Number Number of items visible at the moment
-     * @returns {boolean}
+     * Tells if the next button shall be visible or not.
      */
-    isNextButtonVisible = (firstVisibleIndex, totalItems, visibleItemsCount) => {
+    isNextButtonVisible = (firstVisibleIndex : number, totalItems : number, visibleItemsCount : number) : boolean => {
         return firstVisibleIndex < totalItems - visibleItemsCount;
     }
 
     /**
      * Tells if the previous control button shall be visible or not.
-     * @param {number} firstVisibleIndex Index of the item to which the carousel is scrolled to
-     * @returns {boolean}
      */
-    isPrevButtonVisible (firstVisibleIndex) {
+    isPrevButtonVisible (firstVisibleIndex : number) : boolean {
         return firstVisibleIndex > 0;
     }
 
@@ -159,7 +150,7 @@ class Carousel extends Component {
      * @param {number} visibleItemsCount Total number of visible items
      * @returns {undefined}
      */
-    handleScrollToDirection = (direction, visibleItemsCount) => {
+    handleScrollToDirection = (direction : string, visibleItemsCount : number) => {
         return () => {
             let index;
 
@@ -186,7 +177,7 @@ class Carousel extends Component {
      *
      * @returns {Function}
      */
-    getItemJsx = (visibleItemsCount) => {
+    getItemJsx = (visibleItemsCount : number) => {
             /**
              * Creates JSX for one item
              *

@@ -19,7 +19,6 @@ $color-active-cell-bg: #29a9d8;
 
     width: 100%;
     height: 100%;
-
     margin: 0;
     padding: 0;
 }
@@ -45,7 +44,6 @@ $color-active-cell-bg: #29a9d8;
     font: 16px/22px 'helvetica-neue', 'Helvetica Neue', Helvetica, Arial, Sans-Serif;
 
     position: relative;
-
     z-index: 1;
 
     display: list-item;
@@ -60,7 +58,6 @@ $color-active-cell-bg: #29a9d8;
     list-style: none;
 
     cursor: pointer;
-
     transition: visibility .2s linear .5s, opacity .3s linear;
 
     color: $color-cell;
@@ -142,7 +139,6 @@ $color-active-cell-bg: #29a9d8;
 
     position: absolute;
     top: 40%;
-
     left: 30%;
 }
 
