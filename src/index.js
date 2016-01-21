@@ -5,7 +5,6 @@ import React, {
 import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
-import styles from './carousel.scss';
 
 /* eslint-disable react/no-set-state, react/no-did-mount-set-state */
 class Carousel extends Component {
@@ -281,5 +280,9 @@ class Carousel extends Component {
         </div>;
     }
 }
+
+let styles;
+
+styles = {};
 
 export default CSSModules(Carousel, styles);

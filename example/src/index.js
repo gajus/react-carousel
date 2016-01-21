@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Carousel from 'react-carousel';
 import _ from 'lodash';
+import carouselStyles from './carousel.scss';
 
 class App extends React.Component {
     constructor (props) {
@@ -78,6 +79,7 @@ class App extends React.Component {
                     onItemActivate={this.handleActivateItem}
                     onItemsScroll={this.handleScrollToIndex}
                     scrollStepDistance={this.state.scrollStepDistance}
+                    styles={carouselStyles}
                 />
 
                 <div style={{margin: '30px 10px'}}>

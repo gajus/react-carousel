@@ -1,6 +1,6 @@
 {
   "name": "react-carousel",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "React carousel component.",
   "main": "./dist/index.js",
   "license": "BSD-3-Clause",
