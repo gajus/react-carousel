@@ -1,3 +1,5 @@
+/* eslint-disable valid-jsdoc, jsdoc/require-description-complete-sentence, jsdoc/require-param, jsdoc/check-param-names */
+
 import React, {
     Component,
     PropTypes
@@ -47,14 +49,14 @@ class Carousel extends Component {
     }
 
     /**
-     * Get the index component should (safely) scroll to
+     * Get the index component should safely scroll to.
      *
      * @param {Object} options
-     * @property {number} options.totalItems Total number of items being displayed
-     * @property {number} options.currentVisibleIndex Index of item in front
-     * @property {string} options.direction next|previous Direction in which to scroll
-     * @property {number} options.visibleItemsCount Number of items displayed at one time in component
-     * @property {number} options.stepDistance Number of items to scroll in one step
+     * @param {number} options.totalItems Total number of items being displayed
+     * @param {number} options.currentVisibleIndex Index of item in front
+     * @param {string} options.direction next|previous Direction in which to scroll
+     * @param {number} options.visibleItemsCount Number of items displayed at one time in component
+     * @param {number} options.stepDistance Number of items to scroll in one step
      *
      * @returns {number} Index of item to which to scroll
      */
@@ -142,8 +144,7 @@ class Carousel extends Component {
     };
 
     /**
-     * Helper function to avoid typing so many variables twice for two control buttons since most of the
-     * variables are already in scope
+     * Helper function to avoid typing so many variables twice for two control buttons since most of the variables are already in scope.
      *
      * @param {string} direction direction in which to scroll
      * @param {number} visibleItemsCount Total number of visible items
@@ -155,10 +156,10 @@ class Carousel extends Component {
 
             index = this.getIndexToScrollTo({
                 direction,
-                totalItems: this.props.items.length,
                 firstVisibleIndex: this.props.firstVisibleIndex,
-                visibleItemsCount,
-                scrollStepDistance: this.props.scrollStepDistance
+                scrollStepDistance: this.props.scrollStepDistance,
+                totalItems: this.props.items.length,
+                visibleItemsCount
             });
 
             this.props.onItemsScroll(index);
@@ -207,9 +208,9 @@ class Carousel extends Component {
                     self.handleActivateItem(item);
                 }}
                 style={{
-                    width: this.props.itemWidth,
+                    display: isVisible ? 'list-item' : 'none',
                     marginRight: this.props.itemMargin,
-                    display: isVisible ? 'list-item' : 'none'
+                    width: this.props.itemWidth
                 }}
                 styleName={'cell' + (this.props.activeItemId === item.key ? '-active' : '')}
                    >
@@ -241,42 +242,42 @@ class Carousel extends Component {
         totalItems = items.length;
         prevButtonVisible = this.isPrevButtonVisible(firstVisibleIndex);
         visibleItemsCount = this.getVisibleItemsCount({
-            firstVisibleIndex,
-            maxWidth,
-            totalItems,
-            itemWidth,
             controlWidth,
-            itemMargin
+            firstVisibleIndex,
+            itemMargin,
+            itemWidth,
+            maxWidth,
+            totalItems
         });
         nextButtonVisible = this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
         return <div ref='wrapper' styleName='wrapper'>
-                <ul styleName='carousel'>
+            <ul styleName='carousel'>
 
-                    <li onClick={this.handleScrollToDirection('previous', visibleItemsCount)}
-                        style={{
-                            width: controlWidth,
-                            marginRight: itemMargin,
-                            display: prevButtonVisible ? 'list-item' : 'none'
-                        }}
-                        styleName='control-cell-previous'
-                    >
-                        <span styleName='control-icon-previous'></span>
-                    </li>
+                <li onClick={this.handleScrollToDirection('previous', visibleItemsCount)}
+                    style={{
+                        display: prevButtonVisible ? 'list-item' : 'none',
+                        marginRight: itemMargin,
+                        width: controlWidth
+                    }}
+                    styleName='control-cell-previous'
+                >
+                    <span styleName='control-icon-previous'></span>
+                </li>
 
-                    {_.map(items, this.getItemJsx(visibleItemsCount))}
+                {_.map(items, this.getItemJsx(visibleItemsCount))}
 
-                    <li onClick={this.handleScrollToDirection('next', visibleItemsCount)}
-                        style={{
-                            width: controlWidth,
-                            display: nextButtonVisible ? 'list-item' : 'none'
-                        }}
-                        styleName='control-cell-next'
-                    >
-                        <span styleName='control-icon-next'></span>
-                    </li>
+                <li onClick={this.handleScrollToDirection('next', visibleItemsCount)}
+                    style={{
+                        display: nextButtonVisible ? 'list-item' : 'none',
+                        width: controlWidth
+                    }}
+                    styleName='control-cell-next'
+                >
+                    <span styleName='control-icon-next'></span>
+                </li>
 
-                </ul>
+            </ul>
         </div>;
     }
 }
