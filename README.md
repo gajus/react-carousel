@@ -12,6 +12,29 @@ This component is built for react apps that strictly follow flux (or redux) arch
 
 This component is however not fully pure because it uses some state internally. It uses state to store the max-width of its container. There is no way around this. For the behavior required it need to know when its parent's width changes (so it can resize itself accordingly), and it need to re-render. Instead of delegating this operation (like all others) to parent, I've decided to do this internally using state.
 
+## Usage
+
+This component exports es6 module, not es5. So you'll have to make some adjustments in your build system if you're compiling es6 to es5/3.
+
+If you're using webpack, put this in your webpack config:
+
+```js
+.
+.
+    loaders: [
+        {
+            include: [
+                /react-carousel\/src/
+            ],
+            loader: 'babel',
+            test: /\.js$/
+        },
+.
+.
+```
+
+Similar setup would need to be done for browserify or other build system you're using.
+
 ## Behaviour
 
 - The component does very little by itself. You provide it the input with `props`, and it renders it. To make any changes (like change active item, scroll items), you need to change `props` that you pass to it
