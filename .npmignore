@@ -1,5 +1,5 @@
-src
 tests
 coverage
 .*
 *.log
+!.babelrc

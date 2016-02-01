@@ -18,7 +18,7 @@ class Carousel extends Component {
         onItemActivate: PropTypes.func,
         onItemsScroll: PropTypes.func,
         scrollStepDistance: PropTypes.number
-    }
+    };
 
     static defaultProps = {
         controlWidth: 30,
@@ -73,21 +73,21 @@ class Carousel extends Component {
         }
 
         return index;
-    }
+    };
 
     /**
      * Tells if the next button shall be visible or not.
      */
     isNextButtonVisible = (firstVisibleIndex : number, totalItems : number, visibleItemsCount : number) : boolean => {
         return firstVisibleIndex < totalItems - visibleItemsCount;
-    }
+    };
 
     /**
      * Tells if the previous control button shall be visible or not.
      */
-    isPrevButtonVisible (firstVisibleIndex : number) : boolean {
+    isPrevButtonVisible = (firstVisibleIndex : number) : boolean => {
         return firstVisibleIndex > 0;
-    }
+    };
 
     /**
      * Get number of items that can be shown at a point in time.
@@ -139,7 +139,7 @@ class Carousel extends Component {
         }
 
         return visibleItemsCount;
-    }
+    };
 
     /**
      * Helper function to avoid typing so many variables twice for two control buttons since most of the
@@ -163,11 +163,11 @@ class Carousel extends Component {
 
             this.props.onItemsScroll(index);
         };
-    }
+    };
 
     handleActivateItem = (item) => {
         this.props.onItemActivate(item.key);
-    }
+    };
 
     /**
      * Creates functoin that creates JSX for one item
@@ -216,7 +216,7 @@ class Carousel extends Component {
             {item}
             </li>;
         };
-    }
+    };
 
     render () {
         // declaring so many variables instead of directly using props to stay consistent with the coding
