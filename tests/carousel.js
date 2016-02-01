@@ -5,29 +5,14 @@ import chai, {
     expect
 } from 'chai';
 import sinonChai from 'sinon-chai';
-import mockery from 'mockery';
+import CarouselComponent from '../src/';
 
 chai.use(sinonChai);
 
 describe('Carousel', () => {
     let Carousel;
 
-    beforeEach(() => {
-        mockery.enable({
-            warnOnUnregistered: false
-        });
-        mockery.registerMock('./carousel.scss', {});
-
-        /* eslint-disable import/no-require, global-require */
-        Carousel = require('../src/index.js').default;
-        /* eslint-enable import/no-require, global-require */
-        Carousel = new Carousel();
-    });
-
-    afterEach(() => {
-        mockery.deregisterAll();
-        mockery.disable();
-    });
+    Carousel = new CarouselComponent();
 
     describe('.getIndexToScrollTo', () => {
         it('never give index larger than total items', () => {
