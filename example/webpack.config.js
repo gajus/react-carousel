@@ -50,7 +50,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(__dirname, 'src')
+                    path.resolve(__dirname, 'src'),
+                    /react-carousel\/src/
                 ],
                 loader: 'babel'
             },
