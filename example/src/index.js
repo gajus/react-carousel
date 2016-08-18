@@ -3,17 +3,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Carousel from 'react-carousel';
 import _ from 'lodash';
-import carouselStyles from './carousel.scss';
+import './carousel.css';
 
 class App extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            visibleIndex: 0,
             activeItemId: '1',
+            itemMargin: 1,
             scrollStepDistance: 3,
-            itemMargin: 1
+            visibleIndex: 0
         };
     }
 
@@ -44,17 +44,20 @@ class App extends React.Component {
         items = _.map(_.range(1, 15), (num) => {
             return <span
                 key={String(num)}
-                style={{marginTop: '20px',
-                        fontSize: '32px',
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'center'}}
+                style={{
+                    display: 'block',
+                    fontSize: '32px',
+                    marginTop: '20px',
+                    textAlign: 'center',
+                    width: '100%'
+                }}
                    >{num}</span>;
         });
 
-        return <div style={{
-            fontFamily: 'sans-serif'
-        }}
+        return <div
+            style={{
+                fontFamily: 'sans-serif'
+            }}
                >
             <h1>react-carousel demo</h1>
             <h3>Please go <a href='https://github.com/gajus/react-carousel'>here</a> for docs and source</h3>
@@ -62,8 +65,8 @@ class App extends React.Component {
             <div
                 ref='wrapper'
                 style={{
-                    height: 100,
                     background: '#11516B',
+                    height: 100,
                     maxWidth: 500,
                     minWidth: 200
                 }}
@@ -79,7 +82,6 @@ class App extends React.Component {
                     onItemActivate={this.handleActivateItem}
                     onItemsScroll={this.handleScrollToIndex}
                     scrollStepDistance={this.state.scrollStepDistance}
-                    styles={carouselStyles}
                 />
 
                 <div style={{margin: '30px 10px'}}>
@@ -93,10 +95,10 @@ class App extends React.Component {
                                         onChange={this.handleSetItemMargin}
                                         ref='itemMargin'
                                         style={{
-                                            padding: 10,
                                             border: '1px solid #222',
+                                            borderRadius: 4,
                                             outline: 'none',
-                                            borderRadius: 4
+                                            padding: 10
                                         }}
                                         type='number'
                                     />

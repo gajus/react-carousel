@@ -1,81 +1,57 @@
-/* eslint-disable no-process-env, id-match, no-var, object-shorthand */
+/* eslint-disable no-process-env, id-match, no-var, object-shorthand, import/no-commonjs */
 
-var ExtractTextPlugin,
-    devServer,
-    path,
-    webpack;
+const path = require('path');
+const webpack = require('webpack');
 
-webpack = require('webpack');
-path = require('path');
-ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-devServer = {
-    contentBase: path.join(__dirname, '/src/endpoint'),
+const devServer = {
     colors: true,
-    quiet: false,
-    noInfo: false,
-    publicPath: '/static/',
+    contentBase: path.join(__dirname, '/src/endpoint'),
     historyApiFallback: true,
     host: '127.0.0.1',
+    hot: false,
+    noInfo: false,
     port: 8000,
-    hot: false
+    publicPath: '/static/',
+    quiet: false
 };
 
 module.exports = {
-    devtool: 'eval-source-map',
-    debug: true,
-    devServer: devServer,
     context: __dirname,
+    debug: true,
+    devServer,
+    devtool: 'eval-source-map',
     entry: {
-        app: [
-            './src/'
+        app: ['./src/']
+    },
+    module: {
+        loaders: [
+            {
+                include: [path.resolve(__dirname, 'src'), /react-carousel\/src/],
+                loader: 'babel',
+                test: /\.js$/
+            },
+            {
+                loaders: ['style', 'css'],
+                test: /\.css$/
+            }
         ]
     },
     output: {
-        path: path.join(__dirname, '/dist'),
         filename: '[name].js',
+        path: path.join(__dirname, '/dist'),
         publicPath: devServer.publicPath
     },
     plugins: [
-        new ExtractTextPlugin('app.css', {
-            allChunks: true
-        }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.OldWatchingPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.NoErrorsPlugin()
     ],
-    module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                include: [
-                    path.resolve(__dirname, 'src'),
-                    /react-carousel\/src/
-                ],
-                loader: 'babel'
-            },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
-            },
-            {
-                test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass')
-            }
-        ]
-    },
     resolve: {
-        fallback: path.resolve(__dirname, './node_modules'),
         alias: {
             react: path.resolve(__dirname, './node_modules/react'),
             'react-dom': path.resolve(__dirname, './node_modules/react-dom')
-        }
-    },
-    resolveLoader: {
+        },
         fallback: path.resolve(__dirname, './node_modules')
-    },
-    node: {
-        fs: 'empty'
     }
 };
