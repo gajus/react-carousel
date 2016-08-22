@@ -188,7 +188,7 @@ class Carousel extends Component {
              * style is much less expensive then rendering a set of new list-items everytime.
              */
             return <li
-                className={'carousel__cell' + (this.props.activeItemId === item.key ? ' carousel__cell--active' : '')}
+                className={'react-carousel__cell' + (this.props.activeItemId === item.key ? ' react-carousel__cell--active' : '')}
                 key={item.key}
                 onClick={function () {
                     self.handleActivateItem(item);
@@ -225,11 +225,11 @@ class Carousel extends Component {
         });
         const nextButtonVisible = this.isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
 
-        return <div className='carousel' ref='wrapper'>
-            <ul className='clearfix carousel__body'>
+        return <div className='react-carousel' ref='wrapper'>
+            <ul className='clearfix react-carousel__body'>
 
                 <li
-                    className='carousel__control-cell carousel__control-cell--previous clearfix'
+                    className='react-carousel__control-cell carousel__control-cell--previous clearfix'
                     onClick={this.handleScrollToDirection('previous', visibleItemsCount)}
                     style={{
                         display: prevButtonVisible ? 'list-item' : 'none',
@@ -237,20 +237,20 @@ class Carousel extends Component {
                         width: controlWidth
                     }}
                 >
-                    <span className='control__control-cell__icon--previous'></span>
+                    <span className='react-carousel__control-cell__icon--previous'></span>
                 </li>
 
                 {_.map(items, this.getItemJsx(visibleItemsCount))}
 
                 <li
-                    className='carousel__control-cell carousel__control-cell--next clearfix'
+                    className='react-carousel__control-cell react-carousel__control-cell--next clearfix'
                     onClick={this.handleScrollToDirection('next', visibleItemsCount)}
                     style={{
                         display: nextButtonVisible ? 'list-item' : 'none',
                         width: controlWidth
                     }}
                 >
-                    <span className='control__control-cell__icon--next'></span>
+                    <span className='react-carousel__control-cell__icon--next'></span>
                 </li>
 
             </ul>
