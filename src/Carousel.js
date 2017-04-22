@@ -185,8 +185,8 @@ class Carousel extends Component {
     const items = children;
     const itemCount = items.length;
     const visibleItemCount = getVisibleItemCount(itemCount, this.state.firstVisibleIndex, itemWidth, itemMargin, controlWidth, this.state.maxWidth);
-    const prevButtonVisible = isPrevButtonVisible(this.state.firstVisibleIndex);
-    const nextButtonVisible = isNextButtonVisible(itemCount, this.state.firstVisibleIndex, visibleItemCount);
+    const prevButtonVisible = visibleItemCount === 0 ? false : isPrevButtonVisible(this.state.firstVisibleIndex);
+    const nextButtonVisible = visibleItemCount === 0 ? false : isNextButtonVisible(itemCount, this.state.firstVisibleIndex, visibleItemCount);
 
     const carouselStyle = {
       boxSizing: 'border-box',
