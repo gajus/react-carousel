@@ -239,6 +239,10 @@ class Carousel extends Component {
       />
       <ul style={bodyStyle}>
         {items.map((item, index) => {
+          if (!item.key) {
+            throw new Error('react-carousel children must have a "key" property. https://facebook.github.io/react/docs/lists-and-keys.html');
+          }
+
           return this.getItemElement(item, index, visibleItemCount);
         })}
       </ul>
