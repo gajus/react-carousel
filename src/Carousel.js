@@ -28,20 +28,20 @@ export const isPrevButtonVisible = (firstVisibleIndex: number): boolean => {
   return firstVisibleIndex > 0;
 };
 
-export const isNextButtonVisible = (totalItems: number, firstVisibleIndex: number, visibleItemsCount: number): boolean => {
-  return firstVisibleIndex < totalItems - visibleItemsCount;
+export const isNextButtonVisible = (totalItems: number, firstVisibleIndex: number, visibleItemCount: number): boolean => {
+  return firstVisibleIndex < totalItems - visibleItemCount;
 };
 
 export const getIndexToScrollTo = (
   direction: DirectionType,
   totalItems: number,
-  visibleItemsCount: number,
+  visibleItemCount: number,
   firstVisibleIndex: number,
   scrollStepDistance: number
 ) => {
   let index;
 
-  const itemsBeyondVisible = totalItems - firstVisibleIndex - visibleItemsCount;
+  const itemsBeyondVisible = totalItems - firstVisibleIndex - visibleItemCount;
   const itemsBehindVisible = firstVisibleIndex;
 
   if (direction === 'next') {
@@ -53,7 +53,7 @@ export const getIndexToScrollTo = (
   return index;
 };
 
-export const getVisibleItemsCount = (
+export const getVisibleItemCount = (
   totalItems: number,
   firstVisibleIndex: number,
   itemWidth: number,
@@ -62,7 +62,7 @@ export const getVisibleItemsCount = (
   maxWidth: number
 ) => {
   let availableWidth;
-  let visibleItemsCount;
+  let visibleItemCount;
 
   availableWidth = maxWidth;
 
@@ -72,17 +72,17 @@ export const getVisibleItemsCount = (
     availableWidth -= controlWidth + itemMargin;
   }
 
-  visibleItemsCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
+  visibleItemCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
 
-  const nextButtonVisible = isNextButtonVisible(firstVisibleIndex, totalItems, visibleItemsCount);
+  const nextButtonVisible = isNextButtonVisible(totalItems, firstVisibleIndex, visibleItemCount);
 
   if (nextButtonVisible) {
     availableWidth -= controlWidth + itemMargin;
 
-    visibleItemsCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
+    visibleItemCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
   }
 
-  return visibleItemsCount;
+  return visibleItemCount;
 };
 
 class Carousel extends Component {
@@ -142,13 +142,13 @@ class Carousel extends Component {
     window.removeEventListener('resize', this.resizeEventListener);
   }
 
-  handleScrollToDirection = (direction: DirectionType, visibleItemsCount: number): () => void => {
+  handleScrollToDirection = (direction: DirectionType, visibleItemCount: number): void => {
     const index = getIndexToScrollTo(
       direction,
       this.props.items.length,
-      visibleItemsCount,
+      visibleItemCount,
       this.state.firstVisibleIndex,
-      this.props.scrollStepDistance || visibleItemsCount
+      this.props.scrollStepDistance || visibleItemCount
     );
 
     this.props.onItemScroll(index);
@@ -158,8 +158,8 @@ class Carousel extends Component {
     });
   };
 
-  getItemElement = (item: React$Element<any>, index: number, visibleItemsCount: number): React$Element<any> => {
-    const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemsCount + this.state.firstVisibleIndex);
+  getItemElement = (item: React$Element<any>, index: number, visibleItemCount: number): React$Element<any> => {
+    const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemCount + this.state.firstVisibleIndex);
     const isVisible = visibleItemIndeces.includes(index);
 
     return <li
@@ -179,16 +179,15 @@ class Carousel extends Component {
   render () {
     const {
       controlWidth,
-      firstVisibleIndex,
       itemMargin,
       items,
       itemWidth,
       maxWidth
     } = this.props;
     const itemCount = items.length;
-    const visibleItemsCount = getVisibleItemsCount(itemCount, this.state.firstVisibleIndex, itemWidth, itemMargin, controlWidth, this.state.maxWidth);
+    const visibleItemCount = getVisibleItemCount(itemCount, this.state.firstVisibleIndex, itemWidth, itemMargin, controlWidth, this.state.maxWidth);
     const prevButtonVisible = isPrevButtonVisible(this.state.firstVisibleIndex);
-    const nextButtonVisible = isNextButtonVisible(itemCount, this.state.firstVisibleIndex, visibleItemsCount);
+    const nextButtonVisible = isNextButtonVisible(itemCount, this.state.firstVisibleIndex, visibleItemCount);
 
     const carouselStyle = {
       boxSizing: 'border-box',
@@ -230,17 +229,21 @@ class Carousel extends Component {
     >
       <div
         className='react-carousel__navigation-button react-carousel__navigation-button--previous'
-        onClick={this.handleScrollToDirection.bind(this, 'previous', visibleItemsCount)}
+        onClick={() => {
+          this.handleScrollToDirection('previous', visibleItemCount);
+        }}
         style={navigationButtonPreviousStyle}
       />
       <ul style={bodyStyle}>
         {items.map((item, index) => {
-          return this.getItemElement(item, index, visibleItemsCount);
+          return this.getItemElement(item, index, visibleItemCount);
         })}
       </ul>
       <div
         className='react-carousel__navigation-button react-carousel__navigation-button--next'
-        onClick={this.handleScrollToDirection.bind(this, 'next', visibleItemsCount)}
+        onClick={() => {
+          this.handleScrollToDirection('next', visibleItemCount);
+        }}
         style={navigationButtonNextStyle}
       />
     </div>;
