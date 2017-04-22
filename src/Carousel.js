@@ -94,8 +94,7 @@ class Carousel extends Component {
     controlWidth: PropTypes.number,
     firstVisibleIndex: PropTypes.number,
     itemMargin: PropTypes.number,
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
-    itemWidth: PropTypes.number,
+    itemWidth: PropTypes.number.isRequired,
     onItemScroll: PropTypes.func,
     scrollStepDistance: PropTypes.number
   };
@@ -145,7 +144,7 @@ class Carousel extends Component {
   handleScrollToDirection = (direction: DirectionType, visibleItemCount: number): void => {
     const index = getIndexToScrollTo(
       direction,
-      this.props.items.length,
+      this.props.children.length,
       visibleItemCount,
       this.state.firstVisibleIndex,
       this.props.scrollStepDistance || visibleItemCount
@@ -180,10 +179,10 @@ class Carousel extends Component {
     const {
       controlWidth,
       itemMargin,
-      items,
-      itemWidth,
-      maxWidth
+      children,
+      itemWidth
     } = this.props;
+    const items = children;
     const itemCount = items.length;
     const visibleItemCount = getVisibleItemCount(itemCount, this.state.firstVisibleIndex, itemWidth, itemMargin, controlWidth, this.state.maxWidth);
     const prevButtonVisible = isPrevButtonVisible(this.state.firstVisibleIndex);
