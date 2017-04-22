@@ -95,7 +95,7 @@ class Carousel extends Component {
     itemMargin: PropTypes.number,
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
     itemWidth: PropTypes.number,
-    onItemsScroll: PropTypes.func,
+    onItemScroll: PropTypes.func,
     scrollStepDistance: PropTypes.number
   };
 
@@ -104,7 +104,7 @@ class Carousel extends Component {
     firstVisibleIndex: 0,
     itemMargin: 1,
     itemWidth: 50,
-    onItemsScroll: () => {},
+    onItemScroll: () => {},
     scrollStepDistance: 3
   };
 
@@ -149,7 +149,7 @@ class Carousel extends Component {
       this.props.scrollStepDistance
     );
 
-    this.props.onItemsScroll(index);
+    this.props.onItemScroll(index);
   };
 
   getItemElement = (item: React$Element<any>, index: number, visibleItemsCount: number): React$Element<any> => {

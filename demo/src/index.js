@@ -52,7 +52,7 @@ class App extends React.Component {
           items={items}
           itemWidth={50}
           maxWidth={500}
-          onItemsScroll={this.handleScrollToIndex}
+          onItemScroll={this.handleScrollToIndex}
           scrollStepDistance={this.state.scrollStepDistance}
           />
       </div>
