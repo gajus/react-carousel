@@ -37,25 +37,23 @@ class App extends React.Component {
 
     return <div>
       <h1>react-carousel demo</h1>
-      <h3>Please go <a href='https://github.com/gajus/react-carousel'>here</a> for docs and source.</h3>
+      <p>Resize the screen to constraint the container of the carousel.</p>
+      <p>Documentation is available at <a href='https://github.com/gajus/react-carousel'>https://github.com/gajus/react-carousel</a>.</p>
 
-      <div
+      <Carousel
+        controlWidth={25}
+        firstVisibleIndex={this.state.visibleIndex}
+        itemWidth={50}
+        onItemScroll={this.handleScrollToIndex}
+        scrollStepDistance={this.state.scrollStepDistance}
         style={{
           background: '#eee',
           height: 100,
-          width: 500
+          maxWidth: 1000
         }}
       >
-        <Carousel
-          controlWidth={25}
-          firstVisibleIndex={this.state.visibleIndex}
-          items={items}
-          itemWidth={50}
-          maxWidth={500}
-          onItemScroll={this.handleScrollToIndex}
-          scrollStepDistance={this.state.scrollStepDistance}
-          />
-      </div>
+        {items}
+      </Carousel>
     </div>;
   }
 }

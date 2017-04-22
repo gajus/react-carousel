@@ -18,7 +18,31 @@ A carousel.
 
 ```
 
+## Usage
 
+> Refer to [demo](#demo) for a complete setup.
+
+```js
+<Carousel
+  controlWidth={50}
+  itemWidth={240}
+  itemMargin={20}
+>
+  <div>foo</div>
+  <div>bar</div>
+  <div>baz</div>
+</Carousel>
+```
+
+## Demo
+
+```bash
+git clone git@github.com:applaudience/react-carousel.git
+cd ./react-carousel/example
+npm install
+npm start
+
+```
 
 ## Behaviour
 
@@ -54,20 +78,9 @@ A carousel.
  * @property {Carousel~controlWidth} Width of the carousel navigation button.
  * @property {Carousel~firstVisibleIndex} Index to which the carousel is scrolled to (i.e the first index which is visible.) (default: `0`).
  * @property {Carousel~itemMargin} Margin between two items in the carousel.
- * @property {Carousel~items[]} Array of children components (default: `[]`).
  * @property {Carousel~itemWidth} Width of an item.
  * @property {Carousel~onItemActivate} Called when user clicks on an item.
  * @property {Carousel~onItemScroll} Called when user clicks on control buttons.
- * @property {Carousel~scrollStepDistance} Number of items to scroll at one time.
+ * @property {Carousel~scrollStepDistance} Number of items to scroll at one time (default: the current visible item count).
  */
-```
-
-## Demo
-
-```bash
-git clone git@github.com:applaudience/react-carousel.git
-cd ./react-carousel/example
-npm install
-npm start
-
 ```
