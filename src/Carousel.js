@@ -191,11 +191,15 @@ class Carousel extends Component {
     const carouselStyle = {
       boxSizing: 'border-box',
       display: 'flex',
-      flexFlow: 'row wrap'
+      flexFlow: 'row wrap',
+      flexGrow: 1,
+      overflow: 'hidden',
+      ...this.props.style
     };
 
     const navigationButtonStyle = {
       boxSizing: 'border-box',
+      height: 'inherit',
       margin: 0,
       marginRight: itemMargin,
       padding: 0,
