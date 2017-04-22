@@ -1,5 +1,9 @@
-tests
+node_modules
 coverage
-.*
 *.log
+.*
+!.gitignore
+!.npmignore
 !.babelrc
+!.travis.yml
+!.eslintrc

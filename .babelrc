@@ -1,17 +1,7 @@
 {
-    "presets": [
-        "es2015",
-        "stage-0",
-        "react"
-    ],
-    "plugins": [
-        "lodash-modularize"
-    ],
-    "env": {
-        "development": {
-            "plugins": [
-                "typecheck"
-            ]
-        }
-    }
+  "presets": [
+    "es2015",
+    "stage-0",
+    "react"
+  ]
 }
