@@ -201,14 +201,14 @@ class Carousel extends Component {
       boxSizing: 'border-box',
       height: 'inherit',
       margin: 0,
-      marginRight: itemMargin,
       padding: 0,
       width: controlWidth
     };
 
     const navigationButtonPreviousStyle = {
       ...navigationButtonStyle,
-      display: prevButtonVisible ? 'flex' : 'none'
+      display: prevButtonVisible ? 'flex' : 'none',
+      marginRight: itemMargin
     };
 
     const navigationButtonNextStyle = {
