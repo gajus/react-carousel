@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "canonical",
+    "canonical/react",
+    "canonical/flowtype"
+  ],
+  "rules": {
+    "flowtype/no-weak-types": 0,
+    "react/jsx-no-bind": 0,
+    "react/sort-prop-types": [
+      2,
+      {
+        "ignoreCase": true
+      }
+    ],
+    "react/jsx-sort-props": [
+      2,
+      {
+        "ignoreCase": true
+      }
+    ],
+    "react/no-did-mount-set-state": 0,
+    "react/no-set-state": 0,
+    "react/sort-comp": 0
+  }
+}
