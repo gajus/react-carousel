@@ -157,12 +157,12 @@ class Carousel extends Component {
     });
   };
 
-  getItemElement = (item: React$Element<any>, index: number, visibleItemCount: number): React$Element<any> => {
+  getItemElement = (item: React$Element<any>, key: string, index: number, visibleItemCount: number): React$Element<any> => {
     const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemCount + this.state.firstVisibleIndex);
     const isVisible = visibleItemIndeces.includes(index);
 
     return <li
-      key={index}
+      key={key}
       style={{
         boxSizing: 'border-box',
         display: isVisible ? 'list-item' : 'none',
@@ -243,7 +243,7 @@ class Carousel extends Component {
             throw new Error('react-carousel children must have a "key" property. https://facebook.github.io/react/docs/lists-and-keys.html');
           }
 
-          return this.getItemElement(item, index, visibleItemCount);
+          return this.getItemElement(item, item.key, index, visibleItemCount);
         })}
       </ul>
       <div
