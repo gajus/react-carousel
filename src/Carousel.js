@@ -106,7 +106,7 @@ class Carousel extends Component {
     itemMargin: 1,
     itemWidth: 50,
     onItemScroll: () => {},
-    scrollStepDistance: 3
+    scrollStepDistance: null
   };
 
   constructor (props: Object) {
@@ -147,8 +147,8 @@ class Carousel extends Component {
       direction,
       this.props.items.length,
       visibleItemsCount,
-      this.props.scrollStepDistance
       this.state.firstVisibleIndex,
+      this.props.scrollStepDistance || visibleItemsCount
     );
 
     this.props.onItemScroll(index);
