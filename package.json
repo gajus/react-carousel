@@ -3,12 +3,15 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-canonical": "^8.1.1",
+    "flow-bin": "^0.44.2",
+    "flow-copy-source": "^1.1.0",
     "mocha": "^3.2.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -23,16 +26,21 @@
     "carousel"
   ],
   "license": "BSD-3-Clause",
-  "main": "./dist/index.js",
+  "main": "./dist/Carousel.js",
   "name": "react-carousel",
   "repository": {
     "type": "git",
     "url": "git@github.com:gajus/react-carousel.git"
   },
   "scripts": {
-    "build": "rm -fr ./dist && NODE_ENV=production babel ./src --source-maps --copy-files --out-dir ./dist",
-    "lint": "eslint ./test ./src ./demo/src",
+    "build": "rm -fr ./dist && NODE_ENV=production babel ./src --source-maps --copy-files --out-dir ./dist && flow-copy-source src dist",
+    "lint": "eslint ./test ./src ./demo/src && flow",
     "test": "mocha --compilers js:babel-core/register"
   },
-  "version": "4.0.0"
+  "version": "4.0.0",
+  "dependencies": {
+    "debounce": "^1.0.2",
+    "prop-types": "^15.5.8",
+    "range": "0.0.3"
+  }
 }

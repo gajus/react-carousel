@@ -6,6 +6,18 @@
 
 A carousel.
 
+## Markup
+
+```css
+.react-carousel
+  .react-carousel__navigation-button .react-carousel__navigation-button--previous
+  ul
+    li
+  .react-carousel__navigation-button .react-carousel__navigation-button--next
+
+```
+
+
 ## Behaviour
 
   * The component does very little by itself. You provide it the input with `props`, and it renders it. To make any changes (like change active item, scroll items), you need to change `props` that you pass to it
