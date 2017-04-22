@@ -163,7 +163,7 @@ class Carousel extends Component {
     const isVisible = visibleItemIndeces.includes(index);
 
     return <li
-      key={item.key}
+      key={index}
       style={{
         boxSizing: 'border-box',
         display: isVisible ? 'list-item' : 'none',
