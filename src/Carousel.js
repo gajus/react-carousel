@@ -12,7 +12,8 @@ import debounce from 'debounce';
 type DirectionType = 'previous' | 'next';
 
 type StateType = {
-  maxWidth: number | null
+  firstVisibleIndex: number,
+  maxWidth: number
 };
 
 /**
@@ -112,7 +113,8 @@ class Carousel extends Component {
     super(props);
 
     this.state = {
-      maxWidth: null
+      firstVisibleIndex: props.firstVisibleIndex || 0,
+      maxWidth: 0
     };
 
     this.resizeEventListener = debounce(() => {
@@ -145,15 +147,19 @@ class Carousel extends Component {
       direction,
       this.props.items.length,
       visibleItemsCount,
-      this.props.firstVisibleIndex,
       this.props.scrollStepDistance
+      this.state.firstVisibleIndex,
     );
 
     this.props.onItemScroll(index);
+
+    this.setState({
+      firstVisibleIndex: index
+    });
   };
 
   getItemElement = (item: React$Element<any>, index: number, visibleItemsCount: number): React$Element<any> => {
-    const visibleItemIndeces = range(this.props.firstVisibleIndex, visibleItemsCount + this.props.firstVisibleIndex);
+    const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemsCount + this.state.firstVisibleIndex);
     const isVisible = visibleItemIndeces.includes(index);
 
     return <li
@@ -180,9 +186,9 @@ class Carousel extends Component {
       maxWidth
     } = this.props;
     const itemCount = items.length;
-    const visibleItemsCount = getVisibleItemsCount(itemCount, firstVisibleIndex, itemWidth, itemMargin, controlWidth, maxWidth);
-    const prevButtonVisible = isPrevButtonVisible(firstVisibleIndex);
-    const nextButtonVisible = isNextButtonVisible(itemCount, firstVisibleIndex, visibleItemsCount);
+    const visibleItemsCount = getVisibleItemsCount(itemCount, this.state.firstVisibleIndex, itemWidth, itemMargin, controlWidth, this.state.maxWidth);
+    const prevButtonVisible = isPrevButtonVisible(this.state.firstVisibleIndex);
+    const nextButtonVisible = isNextButtonVisible(itemCount, this.state.firstVisibleIndex, visibleItemsCount);
 
     const carouselStyle = {
       boxSizing: 'border-box',
