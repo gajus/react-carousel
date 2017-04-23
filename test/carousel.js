@@ -73,16 +73,4 @@ describe('Carousel', () => {
       expect(prevButtonIsVisible).to.equal(true);
     });
   });
-
-  describe('getVisibleItemsCount', () => {
-    it('returns correct results', () => {
-      const expectedWithNoMargin = (500 - 20) / 40;
-      const expectedWithMargin = Math.floor((500 - 22) / 41);
-      const countWithNoMargin = getVisibleItemsCount(10, 4, 40, 0, 10, 500);
-      const countWithMargin = getVisibleItemsCount(10, 4, 40, 1, 10, 500);
-
-      expect(countWithNoMargin).to.be.equal(expectedWithNoMargin);
-      expect(countWithMargin).to.be.equal(expectedWithMargin);
-    });
-  });
 });
