@@ -165,7 +165,7 @@ class Carousel extends Component {
       key={key}
       style={{
         boxSizing: 'border-box',
-        display: isVisible ? 'list-item' : 'none',
+        display: isVisible ? 'flex' : 'none',
         listStyleType: 'none',
         marginRight: this.props.itemMargin,
         width: this.props.itemWidth
