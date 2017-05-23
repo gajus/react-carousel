@@ -38,7 +38,7 @@
     "lint": "eslint ./test ./src ./demo/src && flow",
     "test": "mocha --compilers js:babel-core/register"
   },
-  "version": "4.2.0",
+  "version": "4.2.1",
   "dependencies": {
     "debounce": "^1.0.2",
     "prop-types": "^15.5.8",
