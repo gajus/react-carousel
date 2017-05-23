@@ -160,6 +160,7 @@ class Carousel extends Component {
   getItemElement = (item: React$Element<any>, key: string, index: number, visibleItemCount: number): React$Element<any> => {
     const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemCount + this.state.firstVisibleIndex);
     const isVisible = visibleItemIndeces.includes(index);
+    const isLastAmongVisible = visibleItemIndeces.length === visibleItemIndeces.indexOf(index) + 1;
 
     return <li
       key={key}
@@ -167,7 +168,7 @@ class Carousel extends Component {
         boxSizing: 'border-box',
         display: isVisible ? 'flex' : 'none',
         listStyleType: 'none',
-        marginRight: this.props.itemMargin,
+        marginRight: isLastAmongVisible ? 0 : this.props.itemMargin,
         width: this.props.itemWidth
       }}
     >
@@ -207,8 +208,7 @@ class Carousel extends Component {
 
     const navigationButtonPreviousStyle = {
       ...navigationButtonStyle,
-      display: prevButtonVisible ? 'flex' : 'none',
-      marginRight: itemMargin
+      display: prevButtonVisible ? 'flex' : 'none'
     };
 
     const navigationButtonNextStyle = {

@@ -28,6 +28,7 @@ class App extends React.Component {
           border: '1px solid #00f',
           boxSizing: 'border-box',
           display: 'block',
+          flexGrow: 1,
           fontSize: '32px',
           height: '100px',
           lineHeight: '100px',
@@ -43,6 +44,7 @@ class App extends React.Component {
       <Carousel
         controlWidth={25}
         firstVisibleIndex={this.state.visibleIndex}
+        itemMargin={10}
         itemWidth={50}
         onItemScroll={this.handleScrollToIndex}
         scrollStepDistance={this.state.scrollStepDistance}
