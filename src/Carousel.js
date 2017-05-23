@@ -64,12 +64,12 @@ export const getVisibleItemCount = (
   let availableWidth;
   let visibleItemCount;
 
-  availableWidth = maxWidth;
+  availableWidth = maxWidth + itemMargin;
 
   const prevButtonVisible = isPrevButtonVisible(firstVisibleIndex);
 
   if (prevButtonVisible) {
-    availableWidth -= controlWidth + itemMargin;
+    availableWidth -= controlWidth;
   }
 
   visibleItemCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
@@ -77,7 +77,7 @@ export const getVisibleItemCount = (
   const nextButtonVisible = isNextButtonVisible(totalItems, firstVisibleIndex, visibleItemCount);
 
   if (nextButtonVisible) {
-    availableWidth -= controlWidth + itemMargin;
+    availableWidth -= controlWidth;
 
     visibleItemCount = getMaximumAccomodableItemCount(availableWidth, itemWidth, itemMargin);
   }
