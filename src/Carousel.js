@@ -102,7 +102,7 @@ class Carousel extends Component {
   static defaultProps = {
     controlWidth: 30,
     firstVisibleIndex: 0,
-    itemMargin: 1,
+    itemMargin: 0,
     itemWidth: 50,
     onItemScroll: () => {},
     scrollStepDistance: null
