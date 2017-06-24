@@ -138,6 +138,8 @@ class Carousel extends Component {
   }
 
   componentWillUnmount () {
+    this.resizeEventListener.clear();
+
     window.removeEventListener('resize', this.resizeEventListener);
   }
 
