@@ -182,6 +182,12 @@ class Carousel extends Component<PropsType, ComponentStateType> {
     </li>;
   };
 
+  captureWrapperElementReference = (element: *) => {
+    if (element) {
+      this.wrapperElement = element;
+    }
+  };
+
   render () {
     const {
       controlWidth,
@@ -231,9 +237,7 @@ class Carousel extends Component<PropsType, ComponentStateType> {
 
     return <div
       className='react-carousel'
-      ref={(element) => {
-        this.wrapperElement = element;
-      }}
+      ref={this.captureWrapperElementReference}
       style={carouselStyle}
     >
       <div
