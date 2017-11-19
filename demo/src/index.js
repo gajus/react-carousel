@@ -48,6 +48,8 @@ class App extends React.Component {
         itemWidth={50}
         onItemScroll={this.handleScrollToIndex}
         scrollStepDistance={this.state.scrollStepDistance}
+
+        // eslint-disable-next-line react/forbid-component-props
         style={{
           background: '#eee',
           height: 100,

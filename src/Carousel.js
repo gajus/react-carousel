@@ -3,7 +3,6 @@
 import React, {
   Component
 } from 'react';
-import PropTypes from 'prop-types';
 import {
   range
 } from 'range';
@@ -11,10 +10,10 @@ import debounce from 'debounce';
 
 type DirectionType = 'previous' | 'next';
 
-type StateType = {
+type ComponentStateType = {|
   firstVisibleIndex: number,
   maxWidth: number
-};
+|};
 
 /**
  * Calculates the maximum number of items that can fit the container
@@ -38,7 +37,7 @@ export const getIndexToScrollTo = (
   visibleItemCount: number,
   firstVisibleIndex: number,
   scrollStepDistance: number
-) => {
+): number => {
   let index;
 
   const itemsBeyondVisible = totalItems - firstVisibleIndex - visibleItemCount;
@@ -48,6 +47,8 @@ export const getIndexToScrollTo = (
     index = firstVisibleIndex + (itemsBeyondVisible > scrollStepDistance ? scrollStepDistance : itemsBeyondVisible);
   } else if (direction === 'previous') {
     index = firstVisibleIndex - (itemsBehindVisible > scrollStepDistance ? scrollStepDistance : itemsBehindVisible);
+  } else {
+    throw new Error('Unexpected state.');
   }
 
   return index;
@@ -85,19 +86,22 @@ export const getVisibleItemCount = (
   return visibleItemCount;
 };
 
-class Carousel extends Component {
+type PropsType = {|
+  +children: *,
+  +controlWidth: number,
+  +firstVisibleIndex: number,
+  +itemMargin: number,
+  +itemWidth: number,
+  +onItemScroll: (index: number) => void,
+  +scrollStepDistance: number,
+  +style: {
+    [key: string]: string
+  }
+|};
+
+class Carousel extends Component<PropsType, ComponentStateType> {
   resizeEventListener: () => void;
   wrapperElement: HTMLElement;
-  state: StateType;
-
-  static propTypes = {
-    controlWidth: PropTypes.number,
-    firstVisibleIndex: PropTypes.number,
-    itemMargin: PropTypes.number,
-    itemWidth: PropTypes.number.isRequired,
-    onItemScroll: PropTypes.func,
-    scrollStepDistance: PropTypes.number
-  };
 
   static defaultProps = {
     controlWidth: 30,
@@ -108,7 +112,7 @@ class Carousel extends Component {
     scrollStepDistance: null
   };
 
-  constructor (props: Object) {
+  constructor (props: PropsType) {
     super(props);
 
     this.state = {

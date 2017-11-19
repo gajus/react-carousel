@@ -7,7 +7,6 @@ import chai, {
 import sinonChai from 'sinon-chai';
 import {
   getIndexToScrollTo,
-  getVisibleItemsCount,
   isNextButtonVisible,
   isPrevButtonVisible
 } from '../src/Carousel';
