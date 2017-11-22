@@ -37,11 +37,10 @@ A carousel.
 ## Demo
 
 ```bash
-git clone git@github.com:applaudience/react-carousel.git
-cd ./react-carousel/example
+git clone https://github.com/gajus/react-carousel.git
+cd ./react-carousel/demo
 npm install
 npm start
-
 ```
 
 ## Behaviour
