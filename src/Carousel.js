@@ -163,16 +163,20 @@ class Carousel extends Component<PropsType, ComponentStateType> {
     });
   };
 
-  getItemElement = (item: React$Element<any>, key: string, index: number, visibleItemCount: number): React$Element<any> => {
+  getItemElement = (item: React$Element<any>, key: string, index: number, visibleItemCount: number): React$Element<any> | null => {
     const visibleItemIndeces = range(this.state.firstVisibleIndex, visibleItemCount + this.state.firstVisibleIndex);
     const isVisible = visibleItemIndeces.includes(index);
     const isLastAmongVisible = visibleItemIndeces.length === visibleItemIndeces.indexOf(index) + 1;
+
+    if (!isVisible) {
+      return null;
+    }
 
     return <li
       key={key}
       style={{
         boxSizing: 'border-box',
-        display: isVisible ? 'flex' : 'none',
+        display: 'flex',
         listStyleType: 'none',
         marginRight: isLastAmongVisible ? 0 : this.props.itemMargin,
         width: this.props.itemWidth
